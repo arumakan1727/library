@@ -3,10 +3,10 @@
 #include <cctype>
 #include <cfloat>
 #include <climits>
-#include <cmath>
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
+#include "cmath"
 
 // C++ lang support
 #include <limits>

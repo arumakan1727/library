@@ -6,7 +6,7 @@ using namespace std;
 //@ alias   fastio
 //@ options head
 struct FastIO {
-  FastIO() { cin.tie(nullptr); ios::sync_with_stdio(false); }
+    FastIO() { cin.tie(nullptr); ios::sync_with_stdio(false); }
 } fastIO_ydk ;
 //@@@@
 
@@ -15,10 +15,10 @@ struct FastIO {
 //@ snippet digits
 //@ options head
 vector<int> digits(unsigned long long n) {
-  if (n == 0) return { 0 };
-  vector<int> ret;
-  while(n > 0) { ret.push_back(n % 10); n /= 10; }
-  return ret;
+    if (n == 0) return { 0 };
+    vector<int> ret;
+    while(n > 0) { ret.push_back(n % 10); n /= 10; }
+    return ret;
 }
 //@@@@
 
@@ -28,9 +28,9 @@ vector<int> digits(unsigned long long n) {
 //@ options head
 template<class T>
 vector<T> compress(vector<T> &dat) {
-  sort(dat.begin(), dat.end());
-  dat.erase(unique(dat.begin(), dat.end()), dat.end());
-  return dat;
+    sort(dat.begin(), dat.end());
+    dat.erase(unique(dat.begin(), dat.end()), dat.end());
+    return dat;
 }
 //@@@@
 
@@ -41,8 +41,8 @@ vector<T> compress(vector<T> &dat) {
 //@ options head
 template<class T>
 map<T,int> posDict(vector<T> &dat) {
-  map<T,int> dict;
-  for (int i = 0; i < dat.size(); ++i) dict[dat[i]] = i;
-  return dict;
+    map<T,int> dict;
+    for (int i = 0; i < dat.size(); ++i) dict[dat[i]] = i;
+    return dict;
 }
 //@@@@
