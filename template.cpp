@@ -1,8 +1,10 @@
 #include "bits/stdc++.h"
 // Custom Header <<<
 #define ALL(x) x.begin(), x.end()
-#define iostreamBooster() do{ cin.tie(nullptr); ios_base::sync_with_stdio(false); }while(0)
 #define rep(i, s, n)      for(int i(s); i < int(n); ++i)
+#ifndef YDK
+#define eprintf(...)
+#endif
 using namespace std;
 using i64 = long long;
 using pii = pair<int, int>;
