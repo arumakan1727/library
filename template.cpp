@@ -2,6 +2,7 @@
 // Custom Header <<<
 #define ALL(x) x.begin(), x.end()
 #define rep(i, s, n)      for(int i(s); i < int(n); ++i)
+#define endl '\n'
 #ifndef YDK
 #define eprintf(...)
 #endif
