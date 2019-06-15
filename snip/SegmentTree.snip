@@ -3,35 +3,34 @@ alias       segtree
 options     head
     template<class Monoid>
     struct SegTree {
-      using Func = function<Monoid(Monoid, Monoid)>;
-      const int sz;
-      const Func fn;
-      const Monoid unity;
-      vector<Monoid> dat;
+        using Func = function<Monoid(Monoid, Monoid)>;
+        const int sz;
+        const Func fn;
+        const Monoid unity;
+        vector<Monoid> dat;
     
-      SegTree(int n, const Monoid &u, Func f)
-        : sz(1 << (__lg(n+5) + 1)), fn(f), unity(u), dat(sz*2, unity) {}
+        SegTree(int n, const Monoid &u, Func f)
+            : sz(1 << (__lg(n+5) + 1)), fn(f), unity(u), dat(sz*2, unity) {}
     
-      void set(int k, const Monoid &v) { dat[k + sz] = v; }
+        void set(int k, const Monoid &v) { dat[k + sz] = v; }
     
-      Monoid& operator[] (int k) { return dat[k + sz]; }
+        Monoid& operator[] (int k) { return dat[k + sz]; }
     
-      void build() { for (int k = sz-1; k > 0; --k) dat[k] = fn(dat[2*k], dat[2*k+1]); }
+        void build() { for (int k = sz-1; k > 0; --k) dat[k] = fn(dat[2*k], dat[2*k+1]); }
     
-      void update(int k, const Monoid &v) {
-        dat[ k += sz ] = v;
-        while(k >>= 1) dat[k] = fn(dat[2*k], dat[2*k+1]);
-      }
-    
-      Monoid query(int a, int b) const {
-        Monoid L = unity,  R = unity;
-        for (a += sz, b += sz; a < b; a >>= 1, b >>= 1) {
-          if (a & 1) L = fn(L, dat[a++]);
-          if (b & 1) R = fn(dat[--b], R);
+        void update(int k, const Monoid &v) {
+            dat[ k += sz ] = v;
+            while(k >>= 1) dat[k] = fn(dat[2*k], dat[2*k+1]);
         }
-        return fn(L, R);
-      }
+    
+        Monoid query(int a, int b) const {
+            Monoid L = unity,  R = unity;
+            for (a += sz, b += sz; a < b; a >>= 1, b >>= 1) {
+                if (a & 1) L = fn(L, dat[a++]);
+                if (b & 1) R = fn(dat[--b], R);
+            }
+            return fn(L, R);
+        }
     };
-    ${0}
 
 

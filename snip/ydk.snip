@@ -3,41 +3,34 @@ options     head, indent
     random_device gen;
     mt19937 mt(gen());
     using RR = uniform_int_distribution<int>;
-    ${0}
 
-snippet     outl
-abbr        cout << (...) << '\n'
+snippet     cout
+abbr        cout << (...) << endl
 options     head
-    cout << (${1}) << '\n';
-    ${0}
+    cout << (${1}) << endl;
 
 snippet     yesno
 abbr        yes, no
 options     head
-    cout << ((${1}) ? "yes" : "no") << '\n';
-    ${0}
+    cout << ((${1}) ? "yes" : "no") << endl;
 
 snippet     YesNo
 abbr        Yes, No
 options     head
-    cout << ((${1}) ? "Yes" : "No") << '\n';
-    ${0}
+    cout << ((${1}) ? "Yes" : "No") << endl;
 
 snippet     YESNO
 abbr        Yes, No
 options     head
-    cout << ((${1}) ? "YES" : "NO") << '\n';
-    ${0}
+    cout << ((${1}) ? "YES" : "NO") << endl;
 
 snippet     Heap
 abbr        priority_queue
 options     head
     template<class T> using MaxHeap = priority_queue<T>;
     template<class T> using MinHeap = priority_queue<T, vector<T>, greater<T>>;
-    ${0}
 
-snippet     MSET
+snippet     memset
 abbr        memset()
 options     head
-    memset(${1}, ${2:value}, $1);
-    ${0}
+    memset(${1}, ${2:0}, $1);
