@@ -14,10 +14,9 @@ struct FastIO {
 //@@@@@@
 //@ snippet digits
 //@ options head
-vector<int> digits(unsigned long long n) {
-    if (n == 0) return { 0 };
+inline vector<int> digits(unsigned long long n) {
     vector<int> ret;
-    while(n > 0) { ret.push_back(n % 10); n /= 10; }
+    do { ret.push_back(n % 10); n /= 10; } while(n > 0);
     return ret;
 }
 //@@@@
@@ -26,12 +25,8 @@ vector<int> digits(unsigned long long n) {
 //@@@@@@
 //@ snippet compress
 //@ options head
-template<class T>
-vector<T> compress(vector<T> &dat) {
-    sort(dat.begin(), dat.end());
-    dat.erase(unique(dat.begin(), dat.end()), dat.end());
-    return dat;
-}
+#define compress(a) \
+    do{ sort(a.begin(), a.end()); a.erase(unique(a.begin(), a.end()), a.end()); }while(0);
 //@@@@
 
 
@@ -40,9 +35,31 @@ vector<T> compress(vector<T> &dat) {
 //@ alias   posdict
 //@ options head
 template<class T>
-map<T,int> posDict(vector<T> &dat) {
+inline map<T,int> posDict(vector<T> &dat) {
     map<T,int> dict;
     for (int i = 0; i < dat.size(); ++i) dict[dat[i]] = i;
     return dict;
 }
 //@@@@
+
+
+//@@@@@@
+//@ snippet ruisekiwa
+//@ options head
+using v64 = vector<long long>;
+
+template<class Array>
+v64 ruisekiwa(const Array src, int N)
+{
+    v64 s(N, src[0]);
+    for (int i = 1; i < N; ++i) s[i] = s[i-1] + src[i];
+    return s;
+}
+
+inline long long partSum(const v64 &s, int l, int r)
+{
+    if (l > r) swap(l, r);
+    return s[r] - (l <= 0 ? 0 : s[l-1]);
+}
+//@@@@
+
