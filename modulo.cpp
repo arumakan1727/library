@@ -1,14 +1,13 @@
 #include "bits/stdc++.h"
-using i64 = long long;
 using namespace std;
 
 
 //@@@@@@@
 //@ snippet modPow
 //@ options head
-constexpr i64 modPow(i64 n, i64 p, const int mod = int(1e9)+7)
+constexpr long long modPow(long long n, long long p, const int mod = int(1e9)+7)
 {
-    i64 ret = 1;
+    long long ret = 1;
     while(p) {
         if (p & 1) ret = (ret * n) % mod;
         n = (n * n) % mod;
@@ -54,18 +53,22 @@ Mint operator/(Mint a, Mint b) { return Mint(a) /= b; }
 //@ options head
 template<size_t N, int MOD=int(1e9)+7> struct Factrial {
     using Mint = ModInt<MOD>;
-    i64 a[N];
+    long long a[N];
+#ifdef YDK
+    inline Factrial() : a{1} { for (int i = 1; i < N; ++i) a[i] = (a[i-1] * i) % MOD; }
+#else
     constexpr inline Factrial() : a{1} { for (int i = 1; i < N; ++i) a[i] = (a[i-1] * i) % MOD; }
+#endif
     constexpr inline Mint operator[] (size_t i) const { return a[i]; }
 };
 
 Factrial<100010> fact;
 
-Mint nCr(i64 n, i64 r) { return (r < 0 || n < r) ? 0 : (fact[n] / (fact[r] * fact[n-r])); }
+Mint nCr(int n, int r) { return (r < 0 || n < r) ? 0 : (fact[n] / (fact[r] * fact[n-r])); }
 
-Mint nPr(i64 n, i64 r) { return (r < 0 || n < r) ? 0 : (fact[n] / fact[r]); }
+Mint nPr(int n, int r) { return (r < 0 || n < r) ? 0 : (fact[n] / fact[r]); }
 
-Mint nHr(i64 n, i64 r) { return nCr(n+r-1, r); }
+Mint nHr(int n, int r) { return nCr(n+r-1, r); }
 //@@@@@@
 
 
