@@ -65,11 +65,11 @@ public:
     }
 
     void addAlias(const string &s) {
-        alias += s;
+        alias += s + " ";
     }
 
     void addOption(const string &s) {
-        options += s;
+        options += s + " ";
     }
 
     void clear() {
