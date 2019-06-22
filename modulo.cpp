@@ -53,12 +53,14 @@ Mint operator/(Mint a, Mint b) { return Mint(a) /= b; }
 //@ options head
 template<size_t N, int MOD=int(1e9)+7> struct Factrial {
     using Mint = ModInt<MOD>;
-    long long a[N];
+    long long a[N+1];
+
 #ifdef YDK
-    inline Factrial() : a{1} { for (int i = 1; i < N; ++i) a[i] = (a[i-1] * i) % MOD; }
+    inline Factrial() : a{1} { for (int i = 1; i <= N; ++i) a[i] = (a[i-1] * i) % MOD; }
 #else
-    constexpr inline Factrial() : a{1} { for (int i = 1; i < N; ++i) a[i] = (a[i-1] * i) % MOD; }
+    constexpr inline Factrial() : a{1} { for (int i = 1; i <= N; ++i) a[i] = (a[i-1] * i) % MOD; }
 #endif
+
     constexpr inline Mint operator[] (size_t i) const { return a[i]; }
 };
 
