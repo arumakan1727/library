@@ -1,5 +1,6 @@
 #include "bits/stdc++.h"
 using namespace std;
+using i64 = long long;
 
 //@@@@@@
 //@ snippet fastIO
@@ -17,6 +18,7 @@ struct FastIO {
 inline vector<int> digits(unsigned long long n) {
     vector<int> ret;
     do { ret.push_back(n % 10); n /= 10; } while(n > 0);
+    reverse(ret.begin(), ret.end());
     return ret;
 }
 //@@@@
@@ -46,20 +48,31 @@ inline map<T,int> posDict(vector<T> &dat) {
 //@@@@@@
 //@ snippet ruisekiwa
 //@ options head
-using v64 = vector<long long>;
-
 template<class Array>
-v64 ruisekiwa(const Array src, int N)
+vector<i64> ruisekiwa(const Array &src, int N)
 {
-    v64 s(N, src[0]);
+    vector<i64> s(N, src[0]);
     for (int i = 1; i < N; ++i) s[i] = s[i-1] + src[i];
     return s;
 }
 
-inline long long partSum(const v64 &s, int l, int r)
+inline i64 partSum(const vector<i64> &s, int l, int r)
 {
     if (l > r) swap(l, r);
+    if (r >= s.size()) return 0;
     return s[r] - (l <= 0 ? 0 : s[l-1]);
 }
 //@@@@
 
+
+//@@@@@@
+//@ snippet countTable
+//@ options head
+template<class Container, class InputIt>
+Container countTable(InputIt first, InputIt last)
+{
+    Container cnt;
+    for (; first != last; ++first) { ++cnt[*first]; }
+    return cnt;
+}
+//@@@@@
