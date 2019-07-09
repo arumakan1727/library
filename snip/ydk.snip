@@ -38,3 +38,11 @@ abbr        first
 snippet     se
 abbr        first
     second
+
+snippet     eprintf
+options     head
+    #ifdef YDK
+    #define eprintf(...) fprintf(stderr, __VA_ARGS__)
+    #else
+    #define eprintf(...)
+    #endif

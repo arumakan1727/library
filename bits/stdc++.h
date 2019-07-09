@@ -6,7 +6,7 @@
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
-#include "cmath"
+#include <cmath>
 
 // C++ lang support
 #include <limits>
@@ -44,7 +44,7 @@
 #include <sstream>
 #include <numeric>
 
+
 #ifndef YDK
 #define YDK
-#define eprintf(...) fprintf(stderr, __VA_ARGS__)
 #endif
