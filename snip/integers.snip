@@ -14,7 +14,7 @@ options     head
             }
         }
     
-        constexpr vector<int> primes(size_t n) const {
+        constexpr vector<int> primes(size_t n = N) const {
             if ((n = min(n,N)) < 2) return {};
             vector<int> a { 2 };
             for(int i=3; i <= n; i+=2) if (isPrime[i]) a.push_back(i);
@@ -116,5 +116,24 @@ options     head
         }
         return g;
     }
+
+
+snippet     combTable
+alias       comb combination CombTable 
+options     head 
+    // パスカルの三角形を利用してnCrのテーブルをコンパイル時に O(nr) で構築する。
+    template<size_t N>
+    struct CombTable {
+        static_assert(N < 70u, "Template parameter <N> is too large. It may be Overflow.");
+        i64 mat[N+1][N+1];
+        constexpr explicit CombTable() {
+            for (int n = 0; n <= N; ++n) {
+                for (int r = 0; r <= n; ++r) {
+                    mat[n][r] = ((r == 0 || n == r) ? (1) : (mat[n-1][r-1] + mat[n-1][r]));
+                }
+            }
+        }
+        i64 operator() (int n, int r) const { return (r < 0 || n < r) ? 0 : mat[n][r]; }
+    };
 
 

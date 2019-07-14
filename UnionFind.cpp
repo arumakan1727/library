@@ -6,7 +6,7 @@ using namespace std;
 //@ options head
 struct UnionFind {
     vector<int> u;
-    UnionFind(int n): u(n+5, -1) {}
+    explicit UnionFind(int n): u(n+5, -1) {}
     int  size(int i)        { return (-u[root(i)]); }
     int  root(int x)        { return (u[x] < 0)? x : u[x] = root(u[x]); }
     bool same(int x, int y) { return root(x) == root(y); }

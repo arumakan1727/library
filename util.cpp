@@ -3,16 +3,6 @@ using namespace std;
 using i64 = long long;
 
 //@@@@@@
-//@ snippet fastIO
-//@ alias   fastio
-//@ options head
-struct FastIO {
-    FastIO() { cin.tie(nullptr); ios::sync_with_stdio(false); }
-} fastIO_ydk ;
-//@@@@
-
-
-//@@@@@@
 //@ snippet digits
 //@ options head
 inline vector<int> digits(unsigned long long n) {
@@ -26,6 +16,7 @@ inline vector<int> digits(unsigned long long n) {
 
 //@@@@@@
 //@ snippet compress
+//@ alias   unique
 //@ options head
 #define compress(a) \
     do{ sort(a.begin(), a.end()); a.erase(unique(a.begin(), a.end()), a.end()); }while(0);

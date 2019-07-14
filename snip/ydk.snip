@@ -33,10 +33,12 @@ options     head
 
 snippet     fi
 abbr        first
+options     word
     first
 
 snippet     se
 abbr        first
+options     word
     second
 
 snippet     eprintf
@@ -46,3 +48,29 @@ options     head
     #else
     #define eprintf(...)
     #endif
+
+snippet     pb
+abbr        push_back
+options     word
+    push_back(${1});
+
+snippet     eb
+abbr        emplace_back
+options     word
+    emplace_back(${1});
+
+snippet     emp
+abbr        emplace
+options     word
+    emplace(${1});
+
+snippet     fastIO
+alias       fastio
+options     head
+    cin.tie(nullptr); ios::sync_with_stdio(false);
+
+snippet     fixed
+alias       setprecision
+options     head
+    cout << fixed << setprecision(9);
+
