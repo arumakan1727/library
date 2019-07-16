@@ -1,3 +1,5 @@
 *.out
 *.gch
 genSnip
+hoj.cpp
+tmp.cpp
