@@ -20,6 +20,7 @@ struct Edge { // {{{
     i64 cost;
     Edge(int src,  int to, i64 cost) : src(src), to(to), cost(cost) {}
     Edge(int to, i64 cost = 0) : Edge(-1, to, cost) {}
+    Edge() {}
     bool operator< (const Edge &o) const { return cost < o.cost; }
     bool operator> (const Edge &o) const { return cost > o.cost; }
 };

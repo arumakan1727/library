@@ -16,3 +16,5 @@ signed main()
 
     return 0;
 }
+
+// vim: set foldmethod=marker :
