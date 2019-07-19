@@ -4,83 +4,83 @@ using namespace std;
 //@@@@@@@
 //@ snippet modulo
 //@ options head
-namespace modulo { // {{{
-    constexpr int MOD = int(1e9) + 7;
+class modint { // {{{
+private:
     using i64 = long long;
-
-    constexpr i64 modPow(i64 n, i64 p, const int mod = MOD) { // {{{
+    i64 n;
+public:
+    static int MOD;
+    inline modint(i64 n_ = 0) : n(n_ % MOD) {}
+    inline modint operator~() const { return pow(n, MOD-2); }
+    inline modint& operator+=(modint o) { n = (n + o.n) % MOD; return *this; }
+    inline modint& operator-=(modint o) { n = (n - o.n + MOD) % MOD; return *this; }
+    inline modint& operator*=(modint o) { n = (n * o.n) % MOD; return *this; }
+    inline modint& operator/=(modint o) { n = (n * (~o).n) % MOD; return *this; }
+    template<class Int> explicit inline operator Int() const { return n; }
+    friend ostream& operator<<(ostream &os, modint o) { os << o.n; return os; }
+    friend istream& operator>>(istream &is, modint &o) { is >> o.n; return is; }
+    static modint pow(i64 n, i64 p) {
         i64 ret = 1;
         for(; p > 0; p >>= 1) {
-            if (p & 1) ret = (ret * n) % mod;
-            n = (n * n) % mod;
+            if (p & 1) ret = (ret * n) % MOD;
+            n = (n * n) % MOD;
         }
         return ret;
     }
-    //////////////////////////////// }}}
-
-    class modint { // {{{
-    private:
-        i64 n;
-    public:
-        constexpr inline modint(i64 n_) : n(n_ % MOD) {}
-        template<class Int> constexpr explicit inline operator Int() const { return n; }
-        friend ostream& operator<<(ostream &os, modint m) { os << m.n; return os; }
-        constexpr inline modint operator~() const { return modPow(n, MOD-2, MOD); }
-        constexpr inline modint& operator+=(modint o) { n = (n + o.n) % MOD; return *this; }
-        constexpr inline modint& operator-=(modint o) { n = (n - o.n + MOD) % MOD; return *this; }
-        constexpr inline modint& operator*=(modint o) { n = (n * o.n) % MOD; return *this; }
-        constexpr inline modint& operator/=(modint o) { n = (n * (~o).n) % MOD; return *this; }
-    };
-
-    modint operator+(modint a, modint b) { return modint(a) += b; }
-    modint operator-(modint a, modint b) { return modint(a) -= b; }
-    modint operator*(modint a, modint b) { return modint(a) *= b; }
-    modint operator/(modint a, modint b) { return modint(a) /= b; }
-    //////////////////////////////// }}}
-
-    // Factrial, InvFact {{{
-#ifdef YDK
-#define constexpr
-#endif
-    template<size_t N> struct Factrial {
-        i64 f[N+1];
-        constexpr inline Factrial() : f{1} { for (int i = 1; i <= N; ++i) f[i] = (f[i-1] * i) % MOD; }
-        constexpr inline modint operator[] (size_t i) const { return f[i]; }
-    };
-    template<size_t N> struct InvFact {
-        i64 inv[N+1];
-        i64 f[N+1];
-        constexpr inline InvFact() : inv{0, 1}, f{1, 1} {
-            for (int i = 2; i < N; ++i) {
-                inv[i] = (MOD - MOD/i) * inv[MOD % i] % MOD;
-                f[i] = f[i-1] * inv[i] % MOD;
-            }
-        }
-        constexpr inline modint operator[] (size_t i) const { return f[i]; }
-    };
-#ifdef YDK
-#undef constexpr
-#endif
-    //////////////////////////////// }}}
-
-    Factrial<100010> fact;
-    InvFact<100010> invFact;
-
-    modint nCr(int n, int r) { return (r < 0 || n < r) ? 0 : (fact[n] * (invFact[r] * invFact[n-r])); }
-    modint nPr(int n, int r) { return (r < 0 || n < r) ? 0 : (fact[n] * invFact[r]); }
-    modint nHr(int n, int r) { return nCr(n+r-1, r); }
-}
-
-using namespace modulo;
+};
+int modint::MOD = int(1e9) + 7;
+modint operator+(modint a, modint b) { return modint(a) += b; }
+modint operator-(modint a, modint b) { return modint(a) -= b; }
+modint operator*(modint a, modint b) { return modint(a) *= b; }
+modint operator/(modint a, modint b) { return modint(a) /= b; }
 //}}}
 //@@@@@@
 
+//@@@@@@@
+//@ snippet Factorial
+//@ snippet invfact nCr nPr
+//@ options head
+// Factorial, InvFact {{{
+#ifdef YDK
+#define constexpr
+#endif
+template<size_t N, int MOD = int(1e9) + 7> struct Factorial {
+    using i64 = long long;
+    i64 f[N+1];
+    constexpr inline Factorial() : f{1} { for (int i = 1; i <= N; ++i) f[i] = (f[i-1] * i) % MOD; }
+    constexpr inline modint operator[] (size_t i) const { return f[i]; }
+};
+template<size_t N, int MOD = int(1e9) + 7> struct InvFact {
+    using i64 = long long;
+    i64 inv[N+1];
+    i64 f[N+1];
+    constexpr inline InvFact() : inv{0, 1}, f{1, 1} {
+        for (int i = 2; i < N; ++i) {
+            inv[i] = (MOD - MOD/i) * inv[MOD % i] % MOD;
+            f[i] = f[i-1] * inv[i] % MOD;
+        }
+    }
+    constexpr inline modint operator[] (size_t i) const { return f[i]; }
+};
+#ifdef YDK
+#undef constexpr
+#endif
+
+Factorial<100010> fact;
+InvFact<100010> invFact;
+
+modint nCr(int n, int r) { return (r < 0 || n < r) ? 0 : (fact[n] * (invFact[r] * invFact[n-r])); }
+modint nPr(int n, int r) { return (r < 0 || n < r) ? 0 : (fact[n] * invFact[r]); }
+modint nHr(int n, int r) { return nCr(n+r-1, r); }
+// }}}
+//@@@@@@@
 
 
 /*
  * Verified on : 2019-07-10
  * https://atcoder.jp/contests/arc077/tasks/arc077_b
  */
+// {{{
 struct FastIO {
     FastIO() { cin.tie(nullptr); ios::sync_with_stdio(false); }
 } fastIO_ydk ;
@@ -112,6 +112,7 @@ void ARC077_D()
     }
     return;
 }
+// }}}
 
 signed main()
 {
