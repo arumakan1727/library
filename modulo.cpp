@@ -16,6 +16,8 @@ public:
     inline modint& operator-=(modint o) { n = (n - o.n + MOD) % MOD; return *this; }
     inline modint& operator*=(modint o) { n = (n * o.n) % MOD; return *this; }
     inline modint& operator/=(modint o) { n = (n * (~o).n) % MOD; return *this; }
+    inline bool operator==(modint o) const { return n == o.n; }
+    inline bool operator!=(modint o) const { return !(*this == o); }
     template<class Int> explicit inline operator Int() const { return n; }
     friend ostream& operator<<(ostream &os, modint o) { os << o.n; return os; }
     friend istream& operator>>(istream &is, modint &o) { is >> o.n; return is; }
