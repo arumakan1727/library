@@ -1,8 +1,7 @@
 snippet     SegTree
-alias       segtree
-options     head
-    template<class Monoid>
-    struct SegTree {
+alias       segtree 
+options     head 
+    template<class Monoid> struct SegTree { // {{{
         using Func = function<Monoid(Monoid, Monoid)>;
         const int sz;
         const Func fn;
@@ -31,6 +30,6 @@ options     head
             }
             return fn(L, R);
         }
-    };
+    }; // }}}
 
 

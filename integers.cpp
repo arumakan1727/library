@@ -6,8 +6,7 @@ using i64 = long long;
 //@ snippet eratosthenes
 //@ options head
 // [0, N] の素数表をコンパイル時に求める。 O(N log log N)
-template<size_t N>
-struct Eratosthenes {
+template<size_t N> struct Eratosthenes { // {{{
     bool isPrime[N+1] {};
 
     constexpr explicit Eratosthenes() {
@@ -27,7 +26,7 @@ struct Eratosthenes {
     }
 
     constexpr bool operator[] (size_t i) const { return isPrime[i]; }
-};
+}; // }}}
 //@@@@@@@
 
 
@@ -36,13 +35,13 @@ struct Eratosthenes {
 //@ snippet isPrime
 //@ options head
 // n が素数ならtrueを返す。 O(sqrt(N))
-constexpr bool isPrime(i64 n)
+constexpr bool isPrime(i64 n) // {{{
 {
     if (n < 2) return false;
     if (n % 2 == 0) return (n == 2);
     for(i64 i=3; i*i <= n; i += 2) if(n % i == 0) return false;
     return true;
-}
+} // }}}
 //@@@@@@@
 
 
@@ -51,7 +50,7 @@ constexpr bool isPrime(i64 n)
 //@ snippet primeFactors
 //@ options head
 // n の素因数を (素因数, 個数) のペアで列挙して返す。O(sqrt(N))
-map<i64, int> getPrimeFactors(i64 n)
+map<i64, int> getPrimeFactors(i64 n) // {{{
 {
     map<i64, int> pf;
     for (i64 i = 2; i * i <= n; ++i) {
@@ -62,7 +61,7 @@ map<i64, int> getPrimeFactors(i64 n)
     }
     if (n != 1) pf[n] = 1;
     return pf;
-}
+} // }}}
 //@@@@@@@
 
 
@@ -71,7 +70,7 @@ map<i64, int> getPrimeFactors(i64 n)
 //@ snippet divisors
 //@ options head
 // n の約数を昇順に列挙して返す。 O(sqrt(N))
-vector<i64> getDivisors(i64 n)
+vector<i64> getDivisors(i64 n) // {{{
 {
     vector<i64> ret;
     i64 i = 1;
@@ -84,7 +83,7 @@ vector<i64> getDivisors(i64 n)
     if (i * i == n) ret.emplace_back(i);
     sort(begin(ret), end(ret));
     return ret;
-}
+} // }}}
 //@@@@@@@
 
 
@@ -95,7 +94,7 @@ vector<i64> getDivisors(i64 n)
 //@ options head
 // ユークリッドの互除法により |a| と |b| の最大公約数を求める。
 // (a == 0)なら b, (b == 0)なら a を返す。
-i64 GCD(i64 a, i64 b)
+i64 GCD(i64 a, i64 b) // {{{
 {
     a = abs(a); b = abs(b);
     if (a > b) swap(a, b);
@@ -105,7 +104,7 @@ i64 GCD(i64 a, i64 b)
         b = r;
     }
     return a;
-}
+} // }}}
 //@@@@@@
 
 
@@ -115,10 +114,10 @@ i64 GCD(i64 a, i64 b)
 //@ alias   lcm
 //@ options head
 // |a| と |b| の最小公倍数を求める。
-i64 LCM(i64 a, i64 b)
+i64 LCM(i64 a, i64 b) // {{{
 {
     return abs(a) / GCD(a,b) * abs(b);
-}
+} // }}}
 //@@@@@@
 
 
@@ -127,8 +126,7 @@ i64 LCM(i64 a, i64 b)
 //@ alias   extgcd
 //@ options head
 // a*x + b*y = gcd(a,b) となる x, y を拡張ユークリッドの互除法によって求める。
-// a, b が負の場合も動作する (多分)
-i64 extGCD(i64 a, i64 b, i64 &x, i64 &y)
+i64 extGCD(i64 a, i64 b, i64 &x, i64 &y) // {{{
 {
     x = 1, y = 0;
     i64 g = a;
@@ -137,7 +135,7 @@ i64 extGCD(i64 a, i64 b, i64 &x, i64 &y)
         y -= a / b * x;
     }
     return g;
-}
+} // }}}
 //@@@@@@
 
 //@@@@@@@
@@ -145,8 +143,7 @@ i64 extGCD(i64 a, i64 b, i64 &x, i64 &y)
 //@ alias   comb combination CombTable
 //@ options head
 // パスカルの三角形を利用してnCrのテーブルをコンパイル時に O(nr) で構築する。
-template<size_t N>
-struct CombTable {
+template<size_t N> struct CombTable { // {{{
     static_assert(N < 70u, "Template parameter <N> is too large. It may be Overflow.");
     i64 mat[N+1][N+1];
     constexpr explicit CombTable() {
@@ -157,7 +154,7 @@ struct CombTable {
         }
     }
     i64 operator() (int n, int r) const { return (r < 0 || n < r) ? 0 : mat[n][r]; }
-};
+}; // }}}
 //@@@@@@@
 
 

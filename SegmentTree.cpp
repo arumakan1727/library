@@ -1,14 +1,11 @@
-#include <cstdio>
-#include <functional>
-#include <vector>
+#include "bits/stdc++.h"
 using namespace std;
 
 //@@@@@@@@@@@
 //@ snippet SegTree
 //@ alias   segtree
 //@ options head
-template<class Monoid>
-struct SegTree {
+template<class Monoid> struct SegTree { // {{{
     using Func = function<Monoid(Monoid, Monoid)>;
     const int sz;
     const Func fn;
@@ -37,16 +34,15 @@ struct SegTree {
         }
         return fn(L, R);
     }
-};
+}; // }}}
 //@@@@@@@@@
-
 
 
 /*
  * Verified on 2019-06-02
  * https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/2/DSL_2_A
  */
-void AOJ_DSL_2_A()
+void AOJ_DSL_2_A() // {{{
 {
     int N, Q;
     int com, x, y;
@@ -63,7 +59,7 @@ void AOJ_DSL_2_A()
         }
     }
     return;
-}
+} // }}}
 
 int main()
 {

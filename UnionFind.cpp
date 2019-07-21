@@ -4,14 +4,14 @@ using namespace std;
 //@@@@@@@@@@
 //@ snippet UnionFind
 //@ options head
-struct UnionFind {
+struct UnionFind { // {{{
     vector<int> u;
     explicit UnionFind(int n): u(n+5, -1) {}
     int  size(int i)        { return (-u[root(i)]); }
     int  root(int x)        { return (u[x] < 0)? x : u[x] = root(u[x]); }
     bool same(int x, int y) { return root(x) == root(y); }
     bool unite(int x, int y){ return (x=root(x)) == (y=root(y))? false : (u[x]+=u[y], u[y]=x, true); }
-};
+}; // }}}
 //@@@@@@@@@
 
 
@@ -19,7 +19,7 @@ struct UnionFind {
  * Verified on 2019-06-01
  * https://atc001.contest.atcoder.jp/tasks/unionfind_a
  */
-void ATC001_B()
+void ATC001_B() // {{{
 {
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
@@ -39,7 +39,7 @@ void ATC001_B()
         }
     }
     return;
-}
+} // }}}
 
 signed main()
 {

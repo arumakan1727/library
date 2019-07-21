@@ -2,7 +2,7 @@
 using namespace std;
 
 //@@@@@@@
-//@ snippet modulo
+//@ snippet modint
 //@ options head
 class modint { // {{{
 private:
@@ -40,7 +40,7 @@ modint operator/(modint a, modint b) { return modint(a) /= b; }
 
 //@@@@@@@
 //@ snippet Factorial
-//@ snippet invfact nCr nPr
+//@ alias   invfact nCr nPr
 //@ options head
 // Factorial, InvFact {{{
 #ifdef YDK

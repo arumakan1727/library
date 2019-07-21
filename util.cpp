@@ -5,12 +5,12 @@ using i64 = long long;
 //@@@@@@
 //@ snippet digits
 //@ options head
-inline vector<int> digits(unsigned long long n) {
+inline vector<int> digits(unsigned long long n) { // {{{
     vector<int> ret;
     do { ret.push_back(n % 10); n /= 10; } while(n > 0);
     reverse(ret.begin(), ret.end());
     return ret;
-}
+} // }}}
 //@@@@
 
 
@@ -39,6 +39,7 @@ inline map<T,int> posDict(vector<T> &dat) {
 //@@@@@@
 //@ snippet ruisekiwa
 //@ options head
+// ruisekiwa {{{
 template<class Array>
 vector<i64> ruisekiwa(const Array &src, int N)
 {
@@ -53,6 +54,7 @@ inline i64 partSum(const vector<i64> &s, int l, int r)
     if (r >= s.size()) return 0;
     return s[r] - (l <= 0 ? 0 : s[l-1]);
 }
+// }}}
 //@@@@
 
 
@@ -60,10 +62,16 @@ inline i64 partSum(const vector<i64> &s, int l, int r)
 //@ snippet countTable
 //@ options head
 template<class Container, class InputIt>
-Container countTable(InputIt first, InputIt last)
+Container countTable(InputIt first, InputIt last) // {{{
 {
     Container cnt;
     for (; first != last; ++first) { ++cnt[*first]; }
     return cnt;
-}
+} // }}}
 //@@@@@
+
+//@@@@@@@@@@
+//@ snippet divup
+//@ options head
+const auto divup = [](i64 a, i64 b) { return (a + b - 1) / b; };
+//@@@@@@@@@@
