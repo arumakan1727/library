@@ -1,0 +1,71 @@
+snippet     exprTokens
+alias       exprtoken tokensplit splitToken 
+options     head 
+    vector<string> exprTokens(const string &expr) // {{{
+    {
+        vector<string> ret;
+        string buf;
+    
+        const auto store = [&ret](string &s) {
+            if (!s.empty()) { ret.emplace_back(move(s)); s.clear(); }
+        };
+    
+        for (char c : expr) {
+            if (isspace(c)) store(buf);
+            else if (isdigit(c)) buf += c;
+            else store(buf), ret.emplace_back(string() + c);
+        }
+        store(buf);
+    
+        return ret;
+    } // }}}
+
+
+snippet     poland
+alias       rpn reversePolishNotation exprParse 
+options     head 
+    vector<string> convertToReversePolishNotation(const vector<string> &infixNotation) // {{{
+    {
+        static const auto rank = [](char c) {
+            switch(c) {
+            case '+': case '-': return 1;
+            case '*': case '/': case '%': return 2;
+            default: return 0;
+            }
+        };
+    
+        vector<string> ret;
+        stack<string> st;
+    
+        for (const auto &e : infixNotation) {
+            const char c = e[0];
+            if (isdigit(c)) {
+                ret.emplace_back(e);
+            }
+            else if (c == '(') {
+                st.emplace(e);
+            }
+            else if (c == ')') {
+                while(st.top()[0] != '(') {
+                    ret.emplace_back(move(st.top()));
+                    st.pop();
+                }
+                st.pop();
+            }
+            else {
+                while (!st.empty() && rank(c) <= rank(st.top()[0])) {
+                    ret.emplace_back(move(st.top()));
+                    st.pop();
+                }
+                st.emplace(e);
+            }
+        }
+    
+        while(!st.empty()) {
+            ret.emplace_back(st.top()); st.pop();
+        }
+    
+        return ret;
+    } // }}}
+
+

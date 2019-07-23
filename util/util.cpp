@@ -111,31 +111,32 @@ i64 syakutori(const Array &a, int N)
 // }}}
 //@@@@@@@@@@
 
-signed main() // {{{
+//@@@@@@@@@@
+//@ snippet split
+//@ options head
+vector<string> split(const string &str, const string &delim) // {{{
 {
-    int a[] = {4, 4, 9, 9, 100, 100, 100};
+    vector<string> ret;
+    string buf;
 
-    printf("{ ");
-    for (int n : a) printf("%d, ", n);
-    printf("}\n");
-
-
-    const auto isOK_lower = [&](int i, int key) { return a[i] >= key; };
-    const auto isOK_upper = [&](int i, int key) { return a[i] > key; };
-
-    int key;
-    while((cin >> key) && key) {
-        const auto lower = bSearch<int>(key, pii(7, -1), isOK_lower);
-        const auto upper = bSearch<int>(key, pii(7, -1), isOK_upper);
-
-        const int lb = lower.first;
-        const int le = lower.second;
-        const int ub = upper.first;
-        const int ue = upper.second;
-        printf("key = %d <= : ng:[%d](%d), ok:[%d](%d)\n", key, lb, a[lb], le, a[le]);
-        printf("key = %d <  : ng:[%d](%d), ok:[%d](%d)\n", key, ub, a[ub], ue, a[ue]);
+    for (char c : str) {
+        if (any_of(delim.begin(), delim.end(), [c](char x) { return c == x; })) {
+            if (!buf.empty()) { ret.push_back(buf); buf.clear(); }
+        } else {
+            buf += c;
+        }
     }
 
-    return 0;
+    return ret;
+} // }}}
+//@@@@@@@@@@
+
+
+signed main() // {{{
+{
+    for (const string &e : split("  3 + 342 ::  0x3f  ", " ")) {
+        cout << e << endl;
+    }
+
 }
 // }}}
