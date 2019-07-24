@@ -1,6 +1,7 @@
 #include "bits/stdc++.h"
 // Custom Header {{{
-#define ALL(x) x.begin(), x.end()
+#define ALL(x)      x.begin(), x.end()
+#define rep(i,n)    for (int i = 0; i < (n); ++i)
 using namespace std;
 using i64 = long long;
 using pii = pair<i64, i64>;
@@ -17,4 +18,3 @@ signed main()
     return 0;
 }
 
-// vim: set foldmethod=marker :
