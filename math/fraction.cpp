@@ -35,6 +35,7 @@ public:
     constexpr i64 gcd() const { return g; }
     constexpr i64 num() const { return n; }
     constexpr i64 den() const { return d; }
+    constexpr bool isInt() const { return d == 1; }
     constexpr Fraction operator~() const              { return Fraction(d, n); }
     constexpr Fraction& operator*=(const Fraction &o) { return *this = Fraction(n * o.n, d * o.d); }
     constexpr Fraction& operator/=(const Fraction &o) { return *this = Fraction(n * o.d, d * o.n); }
