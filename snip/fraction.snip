@@ -37,11 +37,11 @@ options     head
         constexpr Fraction& operator/=(const Fraction &o) { return *this = Fraction(n * o.d, d * o.n); }
         constexpr Fraction& operator+=(const Fraction &o) {
             const auto r = reduce(*this, o);
-            return *this = Fraction(get<0>(r) + get<0>(r), get<2>(r));
+            return *this = Fraction(get<0>(r) + get<1>(r), get<2>(r));
         }
         constexpr Fraction& operator-=(const Fraction &o) {
             const auto r = reduce(*this, o);
-            return *this = Fraction(get<0>(r) - get<0>(r), get<2>(r));
+            return *this = Fraction(get<0>(r) - get<1>(r), get<2>(r));
         }
     };
     
