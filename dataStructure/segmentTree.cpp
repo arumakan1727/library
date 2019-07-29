@@ -18,6 +18,7 @@ template<class Monoid> struct SegTree { // {{{
     void set(int k, const Monoid &v) { dat[k + sz] = v; }
 
     Monoid& operator[] (int k) { return dat[k + sz]; }
+    const Monoid& operator[] (int k) const { return dat[k + sz]; }
 
     void build() { for (int k = sz-1; k > 0; --k) dat[k] = fn(dat[2*k], dat[2*k+1]); }
 
