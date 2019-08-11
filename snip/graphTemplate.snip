@@ -32,3 +32,15 @@ options     head
     // }}}
 
 
+snippet     dfs_arrivable
+alias       arrivable 
+options     head 
+    void dfs_arrivable(int u, const WGraph &G, bool visited[]) // {{{
+    {
+        if (!visited[u]) {
+            visited[u] = true;
+            for (const auto &e : G[u]) dfs_arrivable(e.to, G, visited);
+        }
+    } // }}}
+
+

@@ -3,7 +3,7 @@
 #define all(x)      x.begin(), x.end()
 #define rep(i,n)    for (i64 i = 0; i < (n); ++i)
 #define reps(i,s,t) for (i64 i = (s); i <= (t); ++i)
-#define repr(i,s,t) for (i64 i = (n); i >= (t); --i)
+#define repr(i,s,t) for (i64 i = (s); i >= (t); --i)
 #define LF          '\n'
 
 #ifdef DBG

@@ -1,11 +1,17 @@
 #include "bits/stdc++.h"
+// Custom Header {{{
+#define all(x) x.begin(), x.end()
+#define rep(i,n)    for (i64 i = 0; i < (n); ++i)
+#define reps(i,s,t) for (i64 i = (s); i <= (t); ++i)
+#define repr(i,s,t) for (i64 i = (s); i >= (t); --i)
 using namespace std;
-using i64 = long long;
+using i64 = int_fast64_t;
 using pii = pair<i64, i64>;
 template<class A, class B>inline bool chmax(A &a, const B &b){return b>a ? a=b,1 : 0;}
 template<class A, class B>inline bool chmin(A &a, const B &b){return b<a ? a=b,1 : 0;}
 constexpr int INF  = 0x3f3f3f3f;
 constexpr i64 LINF = 0x3f3f3f3f3f3f3f3fLL;
+// }}}
 
 
 //@@@@@@@
@@ -45,3 +51,15 @@ struct MatrixGraph { // {{{
 // }}}
 //@@@@@@@@
 
+//@@@@@@@@@@
+//@ snippet dfs_arrivable
+//@ alias   arrivable
+//@ options head
+void dfs_arrivable(int u, const WGraph &G, bool visited[]) // {{{
+{
+    if (!visited[u]) {
+        visited[u] = true;
+        for (const auto &e : G[u]) dfs_arrivable(e.to, G, visited);
+    }
+} // }}}
+//@@@@@@@@@@

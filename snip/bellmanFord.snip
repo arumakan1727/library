@@ -1,0 +1,26 @@
+snippet     bellmanFord
+options     head 
+    // If it find NEGATIVE-CYCLE, it returns EMPTY.
+    vector<i64> bellmanFord(const WGraph &G, int src) // {{{
+    {
+        const int V = G.size();
+        vector<i64> dist(V, LINF);
+        dist[src] = 0;
+    
+        bool updated = true;
+        for (int i = 0; updated && i < V-1; ++i) {
+            updated = false;
+            rep(s, V) if (dist[s] < LINF) {
+                for (const auto &e : G[s]) updated |= chmin(dist[e.to], dist[s] + e.cost);
+            }
+        }
+    
+        rep(s, V) for (const auto &e : G[s]) {
+            if (dist[s] + e.cost < dist[e.to]) return {};
+        }
+    
+        return dist;
+    }
+    // }}}
+
+
