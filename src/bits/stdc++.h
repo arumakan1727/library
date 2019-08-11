@@ -45,6 +45,6 @@
 #include <numeric>
 
 
-#ifndef YDK
-#define YDK
+#ifndef DBG
+#define DBG
 #endif

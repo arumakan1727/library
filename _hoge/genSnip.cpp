@@ -44,7 +44,11 @@ private:
     string options;
     vector<string> lines;
 
+#ifdef TEST
 #define tee_printf(out_fp, ...)   do { fprintf(out_fp, __VA_ARGS__); printf(__VA_ARGS__); }while(0)
+#else
+#define tee_printf(out_fp, ...)   do { fprintf(out_fp, __VA_ARGS__); } while(0)
+#endif
 
 public:
 

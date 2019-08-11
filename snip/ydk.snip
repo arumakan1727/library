@@ -4,6 +4,8 @@ options     head
     //@ snippet ${1}
     //@ alias   ${2}
     //@ options ${3}
+    ${0}
+    //@@@@@@@@@@
 
 snippet     random
 options     head, indent
@@ -13,19 +15,19 @@ options     head, indent
 
 snippet     cout
 abbr        cout << (...) << endl
-    cout << (${1}) << endl;
+    cout << (${1}) << "\n";
 
 snippet     yesno
 abbr        yes, no
-    cout << ((${1}) ? "yes" : "no") << endl;
+    cout << ((${1}) ? "yes" : "no") << "\n";
 
 snippet     YesNo
 abbr        Yes, No
-    cout << ((${1}) ? "Yes" : "No") << endl;
+    cout << ((${1}) ? "Yes" : "No") << "\n";
 
 snippet     YESNO
 abbr        Yes, No
-    cout << ((${1}) ? "YES" : "NO") << endl;
+    cout << ((${1}) ? "YES" : "NO") << "\n";
 
 snippet     Heap
 abbr        priority_queue
@@ -47,14 +49,6 @@ snippet     se
 abbr        first
 options     word
     second
-
-snippet     eprintf
-options     head
-    #ifdef YDK
-    #define eprintf(...) fprintf(stderr, __VA_ARGS__)
-    #else
-    #define eprintf(...)
-    #endif
 
 snippet     pb
 abbr        push_back
@@ -79,15 +73,18 @@ options     head
 snippet     fixed
 alias       setprecision
 options     word
-    cout << fixed << setprecision(9);
+    cout << fixed << setprecision(12);
 
 snippet     header
-abbr        mytemplate templateYDK
+alias       mytemplate templateYDK
 options     head
     // Custom Header {{{
-    #define ALL(x) x.begin(), x.end()
+    #define all(x) x.begin(), x.end()
+    #define rep(i,n)    for (i64 i = 0; i < (n); ++i)
+    #define reps(i,s,t) for (i64 i = (s); i <= (t); ++i)
+    #define repr(i,s,t) for (i64 i = (n); i >= (t); --i)
     using namespace std;
-    using i64 = long long;
+    using i64 = int_fast64_t;
     using pii = pair<i64, i64>;
     template<class A, class B>inline bool chmax(A &a, const B &b){return b>a ? a=b,1 : 0;}
     template<class A, class B>inline bool chmin(A &a, const B &b){return b<a ? a=b,1 : 0;}
