@@ -1,5 +1,5 @@
 #include "bits/stdc++.h"
-using namespace std;
+#include "./commonHeader.hpp"
 
 //@@@@@@
 //@ snippet WeightedUnionFind
@@ -37,46 +37,3 @@ struct WeightedUnionFind {
     inline Abel weight(int x)      { root(x); return dw[x]; }
 };
 //@@@@@@@
-
-
-
-
-struct FastIO {
-    FastIO() { cin.tie(nullptr); ios::sync_with_stdio(false); }
-} fastIO_ydk ;
-
-
-/*
- * Verified on 2019-06-22
- * https://atcoder.jp/contests/abc087/submissions/3917126
- */
-void ABC087_D()
-{
-    using i64 = int_fast64_t;
-
-    int N, M;
-    cin >> N >> M;
-
-    WeightedUnionFind<i64> uf(N);
-
-    while(M--) {
-        int l, r, d;
-        cin >> l >> r >> d;
-
-        uf.unite(l, r, d);
-        if (uf.diff(l, r) != d) {
-            cout << "No" << endl;
-            return;
-        }
-    }
-
-    cout << "Yes" << endl;
-
-    return;
-}
-
-int main()
-{
-    ABC087_D();
-    return 0;
-}

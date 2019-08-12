@@ -1,5 +1,7 @@
 *.out
+*.bin
 *.gch
+*.o
 genSnip
-hoj.cpp
 tmp.cpp
+verify/testcases/*
