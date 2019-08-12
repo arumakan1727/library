@@ -5,21 +5,20 @@ options     head
     {
         const int V = G.size();
         vector<i64> dist(V, LINF);
+    
         dist[src] = 0;
     
+        int loop;
         bool updated = true;
-        for (int i = 0; updated && i < V-1; ++i) {
+        for (loop = 0; updated && loop <= V; ++loop) {
             updated = false;
             rep(s, V) if (dist[s] < LINF) {
                 for (const auto &e : G[s]) updated |= chmin(dist[e.to], dist[s] + e.cost);
             }
         }
     
-        rep(s, V) for (const auto &e : G[s]) {
-            if (dist[s] + e.cost < dist[e.to]) return {};
-        }
-    
-        return dist;
+        if (loop > V) return {};
+        else return dist;
     }
     // }}}
 

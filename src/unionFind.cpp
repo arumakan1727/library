@@ -1,5 +1,8 @@
 #include "bits/stdc++.h"
-using namespace std;
+#include "commonHeader.hpp"
+
+#ifndef INCLUDED_YDK_UNION_FIND_CPP
+#define INCLUDED_YDK_UNION_FIND_CPP
 
 //@@@@@@@@@@
 //@ snippet UnionFind
@@ -14,35 +17,4 @@ struct UnionFind { // {{{
 }; // }}}
 //@@@@@@@@@
 
-
-/*
- * Verified on 2019-06-01
- * https://atc001.contest.atcoder.jp/tasks/unionfind_a
- */
-void ATC001_B() // {{{
-{
-    cin.tie(nullptr);
-    ios::sync_with_stdio(false);
-
-    int N, Q;
-    cin >> N >> Q;
-
-    UnionFind uf(N);
-
-    while(Q--) {
-        int p, a, b;
-        cin >> p >> a >> b;
-        if (p == 0) {
-            uf.unite(a, b);
-        } else {
-            cout << (uf.same(a,b) ? "Yes" : "No") << '\n';
-        }
-    }
-    return;
-} // }}}
-
-signed main()
-{
-    ATC001_B();
-    return 0;
-}
+#endif /* End of include-guard */

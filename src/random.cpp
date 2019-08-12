@@ -1,8 +1,8 @@
-#include <cstdint>
-#include <cstdio>
-#include <random>
-#include <type_traits>
-using namespace std;
+#include "bits/stdc++.h"
+#include "commonHeader.hpp"
+
+#ifndef INCLUDED_YDK_RANDOM_CPP
+#define INCLUDED_YDK_RANDOM_CPP
 
 //@@@@@@@@@@@@@
 //@ snippet xorshift
@@ -24,7 +24,7 @@ public:
         x=y; y=z; z=w;
         return ( w=(w^(w>>19))^(t^(t>>8)) );
     }
-    inline uint64_t operator() (uint64_t maxv) { // [0, maxv)
+    inline int64_t operator() (uint64_t maxv) { // [0, maxv)
         return (*this)() % maxv;
     }
     inline int64_t operator() (int64_t minv, int64_t maxv) { // [minv, maxv)
@@ -33,7 +33,7 @@ public:
 }; // }}}
 //@@@@@@@
 
-signed main()
+void XorShift_test()
 {
     XorShift rnd;
 
@@ -41,3 +41,5 @@ signed main()
         printf("%lu\n", rnd(5, 10));
     }
 }
+
+#endif /* End of include-guard */

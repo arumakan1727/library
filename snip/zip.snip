@@ -3,10 +3,11 @@ alias       compress
 options     head 
     template<class T>
     class Zip {
-        vector<T> data;
-        unordered_map<T, size_t> zipIndex;
+        unordered_map<T, int> zipIndex;
     
     public:
+        vector<T> data;
+    
         explicit Zip() {}
     
         template<class InputItr>
@@ -19,9 +20,11 @@ options     head
         template<class InputItr>
         void assign(InputItr begin, InputItr end) { data.assign(begin, end); zipIndex.clear(); }
     
-        void build() {
-            sort(begin(data), end(data));
-            data.erase(unique(begin(data), end(data)), end(data));
+        void reserve(size_t sz) { data.reserve(sz); }
+    
+        void compress() {
+            sort(all(data));
+            data.erase(unique(all(data)), data.end());
             for (int i = 0; i < data.size(); ++i) {
                 zipIndex[data[i]] = i;
             }
@@ -32,9 +35,12 @@ options     head
         auto begin() const { return data.begin(); }
         auto end()   const { return data.end(); }
     
-        const T& operator[] (size_t i)      const { return data[i]; }
+        int size() const { return data.size(); }
     
-        size_t operator() (const T &value)  const { return zipIndex.at(value); }
+        const T& operator[] (int i) const { return data[i]; }
+        T& operator[] (int i ) { return data[i]; }
+    
+        int operator() (const T &value) const { return zipIndex.at(value); }
     };
 
 

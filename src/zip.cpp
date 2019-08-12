@@ -1,17 +1,8 @@
 #include "bits/stdc++.h"
-// Custom Header {{{
-#define all(x) x.begin(), x.end()
-#define rep(i,n)    for (i64 i = 0; i < (n); ++i)
-#define reps(i,s,t) for (i64 i = (s); i <= (t); ++i)
-#define repr(i,s,t) for (i64 i = (s); i >= (t); --i)
-using namespace std;
-using i64 = int_fast64_t;
-using pii = pair<i64, i64>;
-template<class A, class B>inline bool chmax(A &a, const B &b){return b>a ? a=b,1 : 0;}
-template<class A, class B>inline bool chmin(A &a, const B &b){return b<a ? a=b,1 : 0;}
-constexpr int INF  = 0x3f3f3f3f;
-constexpr i64 LINF = 0x3f3f3f3f3f3f3f3fLL;
-// }}}
+#include "./commonHeader.hpp"
+
+#ifndef INCLUDED_YDK_ZIP_CPP
+#define INCLUDED_YDK_ZIP_CPP
 
 //@@@@@@@@@@
 //@ snippet zip
@@ -19,10 +10,11 @@ constexpr i64 LINF = 0x3f3f3f3f3f3f3f3fLL;
 //@ options head
 template<class T>
 class Zip {
-    vector<T> data;
-    unordered_map<T, size_t> zipIndex;
+    unordered_map<T, int> zipIndex;
 
 public:
+    vector<T> data;
+
     explicit Zip() {}
 
     template<class InputItr>
@@ -35,9 +27,11 @@ public:
     template<class InputItr>
     void assign(InputItr begin, InputItr end) { data.assign(begin, end); zipIndex.clear(); }
 
-    void build() {
-        sort(begin(data), end(data));
-        data.erase(unique(begin(data), end(data)), end(data));
+    void reserve(size_t sz) { data.reserve(sz); }
+
+    void compress() {
+        sort(all(data));
+        data.erase(unique(all(data)), data.end());
         for (int i = 0; i < data.size(); ++i) {
             zipIndex[data[i]] = i;
         }
@@ -48,8 +42,13 @@ public:
     auto begin() const { return data.begin(); }
     auto end()   const { return data.end(); }
 
-    const T& operator[] (size_t i)      const { return data[i]; }
+    int size() const { return data.size(); }
 
-    size_t operator() (const T &value)  const { return zipIndex.at(value); }
+    const T& operator[] (int i) const { return data[i]; }
+    T& operator[] (int i ) { return data[i]; }
+
+    int operator() (const T &value) const { return zipIndex.at(value); }
 };
 //@@@@@@@@@@
+
+#endif /* End of include-guard */

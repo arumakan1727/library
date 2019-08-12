@@ -4,20 +4,24 @@ options     head
     template <class T> struct FenwickTree { // {{{
         vector<T> dat;
         const size_t SIZE_POW2;
+    
         explicit FenwickTree(int size): dat(size+5, 0), SIZE_POW2(1 << (__lg(size+5)+1)) {}
     
         inline void add(int i, const T &v){
             for (++i; i < dat.size(); i += i & -i) dat[i]+=v;
         }
+    
         inline T sum(int i) const {
             T s = 0;
             for (++i; i > 0; i -= i & -i) s += dat[i];
             return s;;
         }
+    
         inline T sum(int s, int t) const {
             if (s > t) swap(s, t);
             return sum(t) - sum(s - 1);
         }
+    
         inline int lower_bound(T v) const {
             if (v <= 0) return 0;
             int i = 0;

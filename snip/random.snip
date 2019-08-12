@@ -17,7 +17,7 @@ options     head
             x=y; y=z; z=w;
             return ( w=(w^(w>>19))^(t^(t>>8)) );
         }
-        inline uint64_t operator() (uint64_t maxv) { // [0, maxv)
+        inline int64_t operator() (uint64_t maxv) { // [0, maxv)
             return (*this)() % maxv;
         }
         inline int64_t operator() (int64_t minv, int64_t maxv) { // [minv, maxv)

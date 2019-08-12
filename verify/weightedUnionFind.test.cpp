@@ -1,5 +1,7 @@
 #define PROBLEM https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/1/DSL_1_B
 
+// Verified On: 2019-08-12
+
 #include "../src/bits/stdc++.h"
 #include "../src/commonHeader.hpp"
 

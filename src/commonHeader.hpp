@@ -1,5 +1,5 @@
-#ifndef INCLUDED_COMMON_HEADER_CPP
-#define INCLUDED_COMMON_HEADER_CPP
+#ifndef INCLUDED_COMMON_HEADER_HPP
+#define INCLUDED_COMMON_HEADER_HPP
 
 #include "bits/stdc++.h"
 // Begin Header {{{
@@ -52,4 +52,4 @@ void _trace(const char *s, Head&& head, Tail&&... tail)
 }
 // }}} End Header
 
-#endif /* end of include-guard */
+#endif /* End of include-guard */
