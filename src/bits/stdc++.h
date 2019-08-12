@@ -1,3 +1,6 @@
+#ifndef INCLUDED_YDK_STDCPP_H
+#define INCLUDED_YDK_STDCPP_H
+
 // C langueage
 #include <cassert>
 #include <cctype>
@@ -48,3 +51,5 @@
 #ifndef DBG
 #define DBG
 #endif
+
+#endif /* end of include-guard */
