@@ -11,12 +11,15 @@ main()
 
     local writeFlg=false
 
-    while IFS= read line;
+    # `IFS=` で空白もそのまま読み込み, 
+    # -r でバックスラッシュをエスケープ文字として扱わない
+
+    while IFS= read -r line;
     do
         # ${line,,} は $line を全て小文字に変換する
         if [[ ${line,,} == *header*{{{* ]]; then writeFlg=true; fi
 
-        if "$writeFlg"; then echo "${line}"; fi
+        if "$writeFlg"; then echo -E "${line}"; fi
 
         if [[ ${line,,} == *}}}*header* ]]; then writeFlg=false; fi
     done
@@ -34,6 +37,6 @@ EOT
     # ----------------------------------------
 }
 
-main < ${sourceFile} > ${targetFile}
+main < ${sourceFile} #> ${targetFile}
 
 # vim: set foldmethod=manual :

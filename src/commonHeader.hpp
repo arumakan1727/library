@@ -17,8 +17,8 @@
 using namespace std;
 using i64 = int_fast64_t;
 using pii = pair<i64, i64>;
-template<class T, class U>inline bool chmax(T &a, const U &b){return b>a ? (a=b,1) : 0;}
-template<class T, class U>inline bool chmin(T &a, const U &b){return b<a ? (a=b,1) : 0;}
+template<class T, class U>inline bool chmax(T &a, const U &b){return b>a && (a=b, true);}
+template<class T, class U>inline bool chmin(T &a, const U &b){return b<a && (a=b, true);}
 constexpr int INF  = 0x3f3f3f3f;
 constexpr i64 LINF = 0x3f3f3f3f3f3f3f3fLL;
 
@@ -37,7 +37,7 @@ template <class T>
 void _trace(const char *s, T&& x)
 {
     clog << '{';
-    while(*s != '\0' && *s != ',') clog << *(s++);
+    while(*s != '\0') clog << *(s++);
     clog << ":" << setw(3) << x << '}' << endl;
 }
 
