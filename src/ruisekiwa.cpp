@@ -1,44 +1,31 @@
 #include "bits/stdc++.h"
-using namespace std;
+#include "commonHeader.hpp"
 
 //@@@@@@@@@@
 //@ snippet ruisekiwa
 //@ alias   partSum
 //@ options head
-class Ruisekiwa { // {{{
-    using i64 = long long;
-    vector<i64> s;
+class Ruisekiwa : public vector<i64> { // {{{
+    using super = vector<i64>;
+    using super::super; // コンストラクタを継承
+
 public:
-    Ruisekiwa() {}
-
-    Ruisekiwa(size_t sz) : s(sz, 0) {}
-
-    template<class Itr>
-    Ruisekiwa(Itr begin, Itr end) { build(begin, end); }
-
-    template<class Itr>
-    inline void build(Itr begin, Itr end) {
-        s.resize(end - begin);
-        s[0] = *begin;
-        for(int i = 1; begin+i != end; ++i) {
-            s[i] = s[i-1] + *(begin + i);
-        }
-        return;
+    inline void build() {
+        const auto sz = super::size();
+        for (int i = 1; i < sz; ++i) (*this)[i] += (*this)[i-1];
     }
 
-    inline void build() {
-        for (int i = 1; i < s.size(); ++i) {
-            s[i] += s[i-1];
-        }
+    inline i64 sum(int r) const {
+        return (r < 0) ? 0 : (*this)[r];
     }
 
     inline i64 sum(int l, int r) const {
-        if (l > r) swap(l, r);
-        return s[min<int>(r, s.size()-1)] - (l <= 0 ? 0 : s[l-1]);
+        return sum(r) - sum(l - 1);
     }
-    inline void resize(size_t sz)           { s.assign(sz, 0); }
-    inline i64  operator[] (size_t i) const { return s[i]; }
-    inline i64& operator[] (size_t i)       { return s[i]; }
+
+    inline int lower_bound(i64 key) const {
+        return std::lower_bound(super::begin(), super::end(), key) - super::begin();
+    }
 };
 // }}}
 //@@@@@@@@
@@ -47,7 +34,6 @@ public:
 //@ snippet ruisekiwa2d
 //@ options head
 class Ruisekiwa2D { // {{{
-    using i64 = long long;
     vector<vector<i64>> s;
 public:
     Ruisekiwa2D() {}
@@ -88,9 +74,6 @@ public:
  * https://atcoder.jp/contests/abc005/tasks/abc005_4
  */
 // Ruisekiwa2D - Verify {{{
-template<class A, class B>inline bool chmax(A &a, const B &b){return b>a ? a=b,1 : 0;}
-template<class A, class B>inline bool chmin(A &a, const B &b){return b<a ? a=b,1 : 0;}
-#define rep(i, s, t) for (int i = (s); i <= t; ++i)
 void ABC005_D()
 {
     using i64 = long long;
@@ -107,7 +90,7 @@ void ABC005_D()
     mat.build();
 
     vector<i64> ans(N*N + 10, 0);
-    rep(h, 1, N) rep(w, 1, N) {
+    reps(h, 1, N) reps(w, 1, N) {
         for (int i = 0; i+h <= N; ++i) {
             for (int j = 0; j+w <= N; ++j) {
                 chmax(ans[h*w], mat.sum(i,j, i+h-1, j+w-1));
@@ -155,7 +138,11 @@ signed main()
 {
     cin.tie(nullptr); ios::sync_with_stdio(false);
 
-    ABC005_D();
+    Ruisekiwa rui {{ 3, 1, 4, 1, 5 }};
+    trace(/* before */ rui);
+
+    rui.build();
+    trace(/* after */ rui);
 
     return 0;
 }

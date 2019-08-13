@@ -23,7 +23,7 @@ signed main()
 
         if (com == 1) {
             i64 v; cin >> v;
-            appearNumbers.emplace(v);
+            appearNumbers.emplace_back(v);
             query[i] = pii(com, v);
         } else {
             query[i] = pii(com, -1);

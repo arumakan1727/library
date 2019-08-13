@@ -8,47 +8,29 @@
 //@ snippet zip
 //@ alias   compress
 //@ options head
-template<class T>
-class Zip {
+template<class T> class Zip : public vector<T> { // {{{
+    using super = vector<T>;
+    using super::super; // 基底クラスのコンストラクタを継承
+    using super::begin;
+    using super::end;
+
     unordered_map<T, int> zipIndex;
 
 public:
-    vector<T> data;
-
-    explicit Zip() {}
-
-    template<class InputItr>
-    explicit Zip(InputItr begin, InputItr end) : data(begin, end)
-    { }
-
-    template<class... Args>
-    void emplace(Args&&... args) { data.emplace_back(std::forward<Args>(args)...); }
-
-    template<class InputItr>
-    void assign(InputItr begin, InputItr end) { data.assign(begin, end); zipIndex.clear(); }
-
-    void reserve(size_t sz) { data.reserve(sz); }
-
     void compress() {
-        sort(all(data));
-        data.erase(unique(all(data)), data.end());
-        for (int i = 0; i < data.size(); ++i) {
-            zipIndex[data[i]] = i;
+        std::sort(begin(), end());
+        super::erase(unique(begin(), end()), end());
+
+        const int sz = super::size();
+        for (int i = 0; i < sz; ++i) {
+            zipIndex[(*this)[i]] = i;
         }
     }
 
-    auto begin() { return data.begin(); }
-    auto end()   { return data.end(); }
-    auto begin() const { return data.begin(); }
-    auto end()   const { return data.end(); }
-
-    int size() const { return data.size(); }
-
-    const T& operator[] (int i) const { return data[i]; }
-    T& operator[] (int i ) { return data[i]; }
-
-    int operator() (const T &value) const { return zipIndex.at(value); }
-};
+    inline int operator() (const T &value) const {
+        return zipIndex.at(value);
+    }
+}; // }}}
 //@@@@@@@@@@
 
 #endif /* End of include-guard */
