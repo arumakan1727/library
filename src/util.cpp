@@ -22,12 +22,6 @@ inline vector<int> digits(unsigned long long n) { // {{{
 //@@@@
 
 
-//@@@@@@@@@@
-//@ snippet divup
-//@ options head
-const auto divup = [](i64 a, i64 b) { return (a + b - 1) / b; };
-//@@@@@@@@@@
-
 
 //@@@@@@@@@@
 //@ snippet clamp
@@ -39,11 +33,32 @@ common_type_t<T, Low, High> clamp(const T &x, const Low &low, const High &high) 
 //@@@@@@@@@@
 
 
+
 //@@@@@@@@@@
-//@ snippet sigma
+//@ snippet groupBySameElement
+//@ alias   sameElementSubsequence
 //@ options head
-const auto sigma = [](i64 n) { return n * (n + 1) / 2; };
-//@@@@@@@@@
+template<class Iterator>
+auto groupBySameElementSubsequence(Iterator begin, Iterator end) { // {{{
+    using value_type = typename iterator_traits<Iterator>::value_type;
+
+    vector<pair<value_type, int>> res;
+    int cnt = 1;
+
+    Iterator prevBegin;
+    for (prevBegin = begin++;  begin != end;  prevBegin = begin++) {
+        if (*prevBegin == *begin) {
+            ++cnt;
+        } else {
+            res.emplace_back(*prevBegin, cnt);
+            cnt = 1;
+        }
+    }
+    res.emplace_back(*prevBegin, cnt);
+
+    return res;
+} // }}}
+//@@@@@@@@@@
 
 
 //@@@@@@@@@@
@@ -121,9 +136,3 @@ vector<string> split(const string &str, const string &delim) // {{{
     return ret;
 } // }}}
 //@@@@@@@@@@
-
-
-signed main() // {{{
-{
-}
-// }}}

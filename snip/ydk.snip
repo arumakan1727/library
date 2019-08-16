@@ -38,7 +38,7 @@ options     head
 snippet     memset
 abbr        memset()
 options     head
-    memset(${1}, ${2:0}, sizeof($1));
+    memset(${1}, ${2:-1}, sizeof($1));
 
 snippet     fi
 abbr        first

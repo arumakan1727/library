@@ -15,11 +15,6 @@ options     head
         do{ sort(a.begin(), a.end()); a.erase(unique(a.begin(), a.end()), a.end()); }while(0);
 
 
-snippet     divup
-options     head 
-    const auto divup = [](i64 a, i64 b) { return (a + b - 1) / b; };
-
-
 snippet     clamp
 options     head 
     template <class T, class Low, class High>
@@ -28,9 +23,29 @@ options     head
     }
 
 
-snippet     sigma
+snippet     groupBySameElement
+alias       sameElementSubsequence 
 options     head 
-    const auto sigma = [](i64 n) { return n * (n + 1) / 2; };
+    template<class Iterator>
+    auto groupBySameElementSubsequence(Iterator begin, Iterator end) { // {{{
+        using value_type = typename iterator_traits<Iterator>::value_type;
+    
+        vector<pair<value_type, int>> res;
+        int cnt = 1;
+    
+        Iterator prevBegin;
+        for (prevBegin = begin++;  begin != end;  prevBegin = begin++) {
+            if (*prevBegin == *begin) {
+                ++cnt;
+            } else {
+                res.emplace_back(*prevBegin, cnt);
+                cnt = 1;
+            }
+        }
+        res.emplace_back(*prevBegin, cnt);
+    
+        return res;
+    } // }}}
 
 
 snippet     bSearch
