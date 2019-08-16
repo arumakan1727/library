@@ -5,17 +5,17 @@
 #define INCLUDED_YDK_SEGMENT_TREE_CPP
 
 //@@@@@@@@@@@
-//@ snippet SegTree
+//@ snippet segTree
 //@ alias   segtree segmentTree
 //@ options head
-template<class Monoid> struct SegTree { // {{{
+template<class Monoid> struct SegmentTree { // {{{
     using Func = function<Monoid(Monoid, Monoid)>;
     const int sz;
     const Func merge;
     const Monoid unity;
     vector<Monoid> dat;
 
-    SegTree(int n, const Monoid &u, Func f)
+    SegmentTree(int n, const Monoid &u, Func f)
         : sz(1 << (__lg(n+5) + 1)), merge(f), unity(u), dat(sz*2, unity) {}
 
     void set(int k, const Monoid &v) { dat[k + sz] = v; }
