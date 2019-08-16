@@ -5,22 +5,27 @@ options     head
     class ModInt {
         int64_t n;
     public:
-        inline ModInt(int64_t n = 0) : n((n >= MOD) ? (n % MOD) : (n < 0) ? ((n + MOD) % MOD) : n) {}
+        inline ModInt(const ModInt &o) noexcept : n(o.n) {}
+        inline ModInt(int64_t n = 0) noexcept : n((n >= MOD) ? (n % MOD) : (n < 0) ? ((n + MOD) % MOD) : n) {}
+    
         inline ModInt inv() const noexcept { return pow(n, MOD-2); }
     
         inline ModInt& operator+=(ModInt o) noexcept { n = (n + o.n) % MOD; return *this; }
         inline ModInt& operator-=(ModInt o) noexcept { n = (MOD + n - o.n) % MOD; return *this; }
         inline ModInt& operator*=(ModInt o) noexcept { n = (n * o.n) % MOD; return *this; }
-        inline ModInt& operator/=(ModInt o) noexcept { n = (n * (~o).n) % MOD; return *this; }
-    
+        inline ModInt& operator/=(ModInt o) noexcept { n = (n * o.inv().n) % MOD; return *this; }
+        inline ModInt operator+(ModInt o) noexcept { return ModInt(*this) += o; }
+        inline ModInt operator-(ModInt o) noexcept { return ModInt(*this) -= o; }
+        inline ModInt operator*(ModInt o) noexcept { return ModInt(*this) *= o; }
+        inline ModInt operator/(ModInt o) noexcept { return ModInt(*this) /= o; }
         inline bool operator==(ModInt o) const noexcept { return n == o.n; }
         inline bool operator!=(ModInt o) const noexcept { return !(*this == o); }
     
         template<class Int>
         explicit inline operator Int() const noexcept { return static_cast<Int>(n); }
     
-        friend ostream& operator<<(ostream &os, ModInt o) { os << o.n; return os; }
-        friend istream& operator>>(istream &is, ModInt &o) { is >> o.n; return is; }
+        friend ostream& operator<<(ostream &os, ModInt o) noexcept { os << o.n; return os; }
+        friend istream& operator>>(istream &is, ModInt &o) noexcept  { is >> o.n; return is; }
     
         static constexpr inline ModInt pow(int64_t n, int64_t p) noexcept {
             int64_t ret = 1;
@@ -31,14 +36,6 @@ options     head
             return ret;
         }
     };
-    template<int64_t MOD> auto operator+(ModInt<MOD> a, ModInt<MOD> b) { return ModInt<MOD>(a) += b; }
-    template<int64_t MOD> auto operator-(ModInt<MOD> a, ModInt<MOD> b) { return ModInt<MOD>(a) -= b; }
-    template<int64_t MOD> auto operator*(ModInt<MOD> a, ModInt<MOD> b) { return ModInt<MOD>(a) *= b; }
-    template<int64_t MOD> auto operator/(ModInt<MOD> a, ModInt<MOD> b) { return ModInt<MOD>(a) /= b; }
-    template<int64_t MOD> auto operator+(ModInt<MOD> a, int64_t b) { return ModInt<MOD>(a) += b; }
-    template<int64_t MOD> auto operator-(ModInt<MOD> a, int64_t b) { return ModInt<MOD>(a) -= b; }
-    template<int64_t MOD> auto operator*(ModInt<MOD> a, int64_t b) { return ModInt<MOD>(a) *= b; }
-    template<int64_t MOD> auto operator/(ModInt<MOD> a, int64_t b) { return ModInt<MOD>(a) /= b; }
     // }}}
     
     using modint = ModInt<int(1e9) + 7>;
