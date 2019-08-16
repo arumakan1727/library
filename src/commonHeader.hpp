@@ -8,9 +8,8 @@
 #define rep(i, n)       for (i64 i = 0, i##_limit = (n); i < i##_limit; ++i)
 #define reps(i, s, t)   for (i64 i = (s), i##_limit = (t); i <= i##_limit; ++i)
 #define repr(i, s, t)   for (i64 i = (s), i##_limit = (t); i >= i##_limit; --i)
-#define OUT(x)          cout << (x) << "\n"
 #define VAR(Type, ...)  Type __VA_ARGS__; input(__VA_ARGS__)
-#define let const auto
+#define let             const auto
 
 #ifdef DBG
 #define trace(...) _internal::_trace(#__VA_ARGS__, __VA_ARGS__);
@@ -63,6 +62,9 @@ inline void input(T &x) { cin >> x; }
 
 template<class Head, class... Tail>
 inline void input(Head &head, Tail&... tail) { cin >> head; input(tail...); }
+
+template<class... Args>
+inline void outl(Args&&... args) { cout << make_tuple(std::forward<Args>(args)...) << "\n"; }
 
 ostream& operator<< (ostream &out, ostream&) { return out; }
 
