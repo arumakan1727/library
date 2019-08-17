@@ -4,7 +4,7 @@
 //@@@@@@@
 //@ snippet divisors
 //@ options head
-// Returns `n` divisors ORDER BY ASC.
+// Returns n divisors ORDER BY ASC.
 vector<i64> getDivisors(i64 n) // {{{
 {
     vector<i64> ret;
