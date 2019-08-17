@@ -3,16 +3,21 @@
 
 #include "bits/stdc++.h"
 // Begin Header {{{
-#define all(x)          x.begin(), x.end()
+#define let             const auto
+#define all(x)          (x).begin(), (x).end()
 #define SIZE(x)         static_cast<i64>(x.size())
 #define rep(i, n)       for (i64 i = 0, i##_limit = (n); i < i##_limit; ++i)
 #define reps(i, s, t)   for (i64 i = (s), i##_limit = (t); i <= i##_limit; ++i)
 #define repr(i, s, t)   for (i64 i = (s), i##_limit = (t); i >= i##_limit; --i)
 #define VAR(Type, ...)  Type __VA_ARGS__; input(__VA_ARGS__)
-#define let             const auto
+#define VEC(Type, varName, sz)   vector<Type> varName((sz) + 1)
+#define lowerBound(...)              _lowerBound(__VA_ARGS__)
+#define upperBound(...)              _upperBound(__VA_ARGS__)
+#define _lowerBound(begin, end, ...) (lower_bound((begin), (end), __VA_ARGS__) - (begin))
+#define _upperBound(begin, end, ...) (upper_bound((begin), (end), __VA_ARGS__) - (begin))
 
 #ifdef DBG
-#define trace(...) _internal::_trace(#__VA_ARGS__, __VA_ARGS__);
+#define trace(...) _internal::_trace(#__VA_ARGS__, __VA_ARGS__)
 #else
 #define trace(...)
 #endif
@@ -27,9 +32,11 @@ template<class T, class U>inline bool chmin(T &a, const U &b){return b<a && (a=b
 inline i64  sigma(i64 n)                    { return n * (n + 1) >> 1; }
 inline i64  divup(i64 a, i64 b)             { return (a + b - 1) / b; }
 inline bool inner(i64 a, i64 low, i64 high) { return (low <= a && a < high); }
+inline string to_string(char c)             { return string(1,c); }
 constexpr int INF  = 0x3f3f3f3f;
 constexpr i64 LINF = 0x3f3f3f3f3f3f3f3fLL;
 
+// Input, Output {{{
 namespace _internal { // {{{
     template<size_t> struct _Uint{};
     template<class Tuple>
@@ -66,11 +73,10 @@ inline void input(Head &head, Tail&... tail) { cin >> head; input(tail...); }
 template<class... Args>
 inline void outl(Args&&... args) { cout << make_tuple(std::forward<Args>(args)...) << "\n"; }
 
-ostream& operator<< (ostream &out, ostream&) { return out; }
-
 template<class T>
 ostream& operator<< (ostream &out, const vector<T> &vec) {
-    rep(i, vec.size()) out << vec[i] << " \n"[i+1 == vec.size()];
+    static const char *delim[] = { " ", "" };
+    rep(i, vec.size()) out << vec[i] << delim[i+1 == vec.size()];
     return out;
 }
 
@@ -81,16 +87,17 @@ ostream& operator<< (ostream &out, const pair<T, U> &p) {
 
 template<class... Types>
 ostream& operator<< (ostream &out, const tuple<Types...> &t) {
-    return out << _internal::_print_tuple(out, t, _internal::_Uint<sizeof...(Types)>());
+    return _internal::_print_tuple(out, t, _internal::_Uint<sizeof...(Types)>());
 }
 
 template<class Itr>
-ostream& print(Itr begin, Itr end, const string &separator = " ", ostream &out = cout) {
+ostream& print(Itr begin, Itr end, ostream &out = cout, const string &separator = " ") {
     const auto rbegin = std::prev(end);
     for (; begin != rbegin; ++begin) out << *begin << separator;
     out << *rbegin;
     return out;
-}
+} // }}}
+
 // }}} End Header
 
 #endif /* End of include-guard */
