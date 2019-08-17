@@ -1,26 +1,68 @@
 snippet     ruisekiwa
 alias       partSum 
 options     head 
-    class Ruisekiwa : public vector<i64> { // {{{
-        using super = vector<i64>;
-        using super::super; // コンストラクタを継承
+    class Ruisekiwa { // {{{{
+        vector<i64> cum;
     
     public:
+        Ruisekiwa() : cum(1) {}
+    
+        Ruisekiwa(int sz) : cum(sz + 1) {}
+    
+        template<class T>
+            Ruisekiwa(initializer_list<T> il) { assign(il.begin(), il.end()); }
+    
+        template<class Iterator>
+            Ruisekiwa(Iterator begin, Iterator end) { assign(begin, end); }
+    
+        template<class Iterator>
+            inline void assign(Iterator begin, Iterator end) {
+                cum.assign(distance(begin, end) + 1, 0);
+                std::copy(begin, end, cum.begin() + 1);
+            }
+    
         inline void build() {
-            const auto sz = super::size();
-            for (int i = 1; i < sz; ++i) (*this)[i] += (*this)[i-1];
+            for (int i = 1; i < cum.size(); ++i) {
+                cum[i] += cum[i-1];
+            }
         }
     
+        // "半開区間" [0, r) までの総和
         inline i64 sum(int r) const {
-            return (r < 0) ? 0 : (*this)[r];
+            return cum[r];
         }
     
+        // "半開区間" [l, r) までの総和
         inline i64 sum(int l, int r) const {
-            return sum(r) - sum(l - 1);
+            return sum(r) - sum(l);
         }
     
-        inline int lower_bound(i64 key) const {
-            return std::lower_bound(super::begin(), super::end(), key) - super::begin();
+        ///////////////////////////////////////////////////////////////////////////
+        // vector like methods
+        inline void resize(int sz) {
+            cum.resize(sz + 1);
+        }
+        template<class... Args>
+            inline void emplace_back(Args&&... args) {
+                cum.emplace_back(args...);
+            }
+        inline i64 size() const noexcept {
+            return static_cast<i64>(cum.size()) - 1;
+        }
+        inline const auto& data() const noexcept {
+            return cum;
+        }
+        inline auto begin() const noexcept {
+            return cum.begin() + 1;
+        }
+        inline auto end() const noexcept {
+            return cum.end();
+        }
+        inline i64 operator[](int i) const {
+            return cum[i + 1];
+        }
+        inline i64& operator[](int i) {
+            return cum[i + 1];
         }
     };
     // }}}
@@ -29,37 +71,60 @@ options     head
 snippet     ruisekiwa2d
 options     head 
     class Ruisekiwa2D { // {{{
-        vector<vector<i64>> s;
+        vector<vector<i64>> cum;
     public:
         Ruisekiwa2D() {}
-        Ruisekiwa2D(int h, int w) : s(h+1, vector<i64>(w+1, 0)) {}
+        Ruisekiwa2D(int h, int w) : cum(h+1, vector<i64>(w+1, 0)) {}
     
         inline void build() {
-            const int h = s.size();
-            const int w = s[0].size();
-            for (int j = 1; j < w; ++j) {
-                s[0][j] += s[0][j-1];
-            }
-            for (int i = 1; i < h; ++i) {
-                s[i][0] += s[i-1][0];
-                for (int j = 1; j < w; ++j) {
-                    s[i][j] += s[i-1][j] + s[i][j-1] - s[i-1][j-1];
+            const auto h = cum.size(),  w = cum[0].size();
+            for (int y = 1; y < h; ++y) {
+                for (int x = 1; x < w; ++x) {
+                    cum[y][x] += cum[y][x - 1] + cum[y - 1][x] - cum[y - 1][x - 1];
                 }
             }
-            return;
+        }
+    
+        // Usage: sum({sy, sx}, {gy, gx})
+        inline i64 sum(pair<int, int> s, pair<int, int> t) const {
+            return sum(s.first, s.second, (t.first - s.first), (t.second - s.second));
+        }
+    
+        inline i64 sum(int sy, int sx, int h, int w) const {
+            return cum[sy + h][sx + w] - cum[sy][sx + w] - cum[sy + h][sx] + cum[sy][sx];
         }
     
         inline i64 at(int y, int x) const {
-            return (y < 0) || (x < 0) ? 0 : s[y][x];
+            return cum[y + 1][x + 1];
         }
     
-        inline i64 sum(int sy, int sx, int gy, int gx) const {
-            return s[gy][gx] - at(sy-1, gx) - at(gy, sx-1) + at(sy-1, sx-1);
+        inline i64& at(int y, int x) {
+            return cum[y + 1][x + 1];
         }
     
-        inline void resize(int h, int w) { s.assign(h+1, vector<i64>(w+1, 0)); }
-        inline const vector<i64>& operator[] (size_t i) const { return s[i]; }
-        inline vector<i64>&       operator[] (size_t i)       { return s[i]; }
+        inline void resize(int h, int w) {
+            cum.assign(h+1, vector<i64>(w+1, 0));
+        }
+    
+        inline i64 height() const noexcept {
+            return cum.size() - 1;
+        }
+    
+        inline i64 width() const noexcept {
+            return cum[0].size() - 1;
+        }
+    
+        friend ostream& operator<< (ostream &out, const Ruisekiwa2D &mat) {
+            const auto h = mat.cum.size();
+            const auto w = mat.cum[0].size();
+            for (int i = 1; i < h; ++i) {
+                for (int j = 1; j < w; ++j) {
+                    out << mat.cum[i][j] << " \n"[j + 1 == w && i + 1 < h];
+                }
+            }
+            return out;
+        }
+    
     }; // }}}
 
 
