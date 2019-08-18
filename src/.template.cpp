@@ -99,7 +99,7 @@ ostream& print(Itr begin, Itr end, ostream &out = cout, const string &separator 
 
 signed main()
 {
-    // ios::sync_with_stdio(false); cin.tie(nullptr);
+    ios::sync_with_stdio(false); cin.tie(nullptr);
 
     return 0;
 }
