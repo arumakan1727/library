@@ -2,22 +2,22 @@
 #include "commonHeader.hpp"
 
 //@@@@@@@@@@
-//@ snippet ruisekiwa
-//@ alias   partSum
+//@ snippet cumulativeSum
+//@ alias   ruisekiwa
 //@ options head
-class Ruisekiwa { // {{{{
+class CumulativeSum { // {{{{
     vector<i64> cum;
 
 public:
-    Ruisekiwa() : cum(1) {}
+    CumulativeSum() : cum(1) {}
 
-    Ruisekiwa(int sz) : cum(sz + 1) {}
+    CumulativeSum(int sz) : cum(sz + 1) {}
 
     template<class T>
-        Ruisekiwa(initializer_list<T> il) { assign(il.begin(), il.end()); }
+        CumulativeSum(initializer_list<T> il) { assign(il.begin(), il.end()); }
 
     template<class Iterator>
-        Ruisekiwa(Iterator begin, Iterator end) { assign(begin, end); }
+        CumulativeSum(Iterator begin, Iterator end) { assign(begin, end); }
 
     template<class Iterator>
         inline void assign(Iterator begin, Iterator end) {
@@ -73,13 +73,14 @@ public:
 //@@@@@@@@
 
 //@@@@@@@@@@
-//@ snippet ruisekiwa2d
+//@ snippet cumulativeSum2D
+//@ alias   ruisekiwa2d
 //@ options head
-class Ruisekiwa2D { // {{{
+class CumulativeSum2D { // {{{
     vector<vector<i64>> cum;
 public:
-    Ruisekiwa2D() {}
-    Ruisekiwa2D(int h, int w) : cum(h+1, vector<i64>(w+1, 0)) {}
+    CumulativeSum2D() {}
+    CumulativeSum2D(int h, int w) : cum(h+1, vector<i64>(w+1, 0)) {}
 
     inline void build() {
         const auto h = cum.size(),  w = cum[0].size();
@@ -119,7 +120,7 @@ public:
         return cum[0].size() - 1;
     }
 
-    friend ostream& operator<< (ostream &out, const Ruisekiwa2D &mat) {
+    friend ostream& operator<< (ostream &out, const CumulativeSum2D &mat) {
         const auto h = mat.cum.size();
         const auto w = mat.cum[0].size();
         for (int i = 1; i < h; ++i) {
@@ -133,10 +134,10 @@ public:
 }; // }}}
 //@@@@@@@@@@@
 
-void test_Ruisekiwa1D() // {{{
+void test_CumulativeSum1D() // {{{
 {
     vector<i64> src {{ 3, 2, 0, 4 }};
-    Ruisekiwa cum(src.begin(), src.end());
+    CumulativeSum cum(src.begin(), src.end());
 
     cum.build();
 
@@ -172,7 +173,7 @@ void test_Ruisekiwa1D() // {{{
     assert(cum.sum(2) == 10);
 
 
-    cum = Ruisekiwa(2);
+    cum = CumulativeSum(2);
     assert(cum.size() == 2);
     assert(cum.sum(0) == 0);
     assert(cum.sum(1) == 0);
@@ -181,9 +182,9 @@ void test_Ruisekiwa1D() // {{{
     outl(__func__, ": AC");
 } // }}}
 
-void test_Ruisekiwa2D() // {{{
+void test_CumulativeSum2D() // {{{
 {
-    Ruisekiwa2D mat(2, 2);
+    CumulativeSum2D mat(2, 2);
     mat.at(0, 0) = 2;  mat.at(0, 1) = 1;
     mat.at(1, 0) = 3;  mat.at(1, 1) = 5;
     assert(mat.height() == 2);
@@ -245,9 +246,9 @@ signed main()
 {
     cin.tie(nullptr); ios::sync_with_stdio(false);
 
-    test_Ruisekiwa1D();
+    test_CumulativeSum1D();
 
-    test_Ruisekiwa2D();
+    test_CumulativeSum2D();
 
     return 0;
 }

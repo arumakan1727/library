@@ -1,19 +1,19 @@
-snippet     ruisekiwa
-alias       partSum 
+snippet     cumulativeSum
+alias       ruisekiwa 
 options     head 
-    class Ruisekiwa { // {{{{
+    class CumulativeSum { // {{{{
         vector<i64> cum;
     
     public:
-        Ruisekiwa() : cum(1) {}
+        CumulativeSum() : cum(1) {}
     
-        Ruisekiwa(int sz) : cum(sz + 1) {}
+        CumulativeSum(int sz) : cum(sz + 1) {}
     
         template<class T>
-            Ruisekiwa(initializer_list<T> il) { assign(il.begin(), il.end()); }
+            CumulativeSum(initializer_list<T> il) { assign(il.begin(), il.end()); }
     
         template<class Iterator>
-            Ruisekiwa(Iterator begin, Iterator end) { assign(begin, end); }
+            CumulativeSum(Iterator begin, Iterator end) { assign(begin, end); }
     
         template<class Iterator>
             inline void assign(Iterator begin, Iterator end) {
@@ -68,13 +68,14 @@ options     head
     // }}}
 
 
-snippet     ruisekiwa2d
+snippet     cumulativeSum2D
+alias       ruisekiwa2d 
 options     head 
-    class Ruisekiwa2D { // {{{
+    class CumulativeSum2D { // {{{
         vector<vector<i64>> cum;
     public:
-        Ruisekiwa2D() {}
-        Ruisekiwa2D(int h, int w) : cum(h+1, vector<i64>(w+1, 0)) {}
+        CumulativeSum2D() {}
+        CumulativeSum2D(int h, int w) : cum(h+1, vector<i64>(w+1, 0)) {}
     
         inline void build() {
             const auto h = cum.size(),  w = cum[0].size();
@@ -114,7 +115,7 @@ options     head
             return cum[0].size() - 1;
         }
     
-        friend ostream& operator<< (ostream &out, const Ruisekiwa2D &mat) {
+        friend ostream& operator<< (ostream &out, const CumulativeSum2D &mat) {
             const auto h = mat.cum.size();
             const auto w = mat.cum[0].size();
             for (int i = 1; i < h; ++i) {
