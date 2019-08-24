@@ -2,8 +2,7 @@
 #include "commonHeader.hpp"
 
 //@@@@@@@@@@
-//@ snippet cumulativeSum
-//@ alias   ruisekiwa
+//@ snippet CumulativeSum
 //@ options head
 class CumulativeSum { // {{{{
     vector<i64> cum;
@@ -73,8 +72,7 @@ public:
 //@@@@@@@@
 
 //@@@@@@@@@@
-//@ snippet cumulativeSum2D
-//@ alias   ruisekiwa2d
+//@ snippet CumulativeSum2D
 //@ options head
 class CumulativeSum2D { // {{{
     vector<vector<i64>> cum;
@@ -100,11 +98,11 @@ public:
         return cum[sy + h][sx + w] - cum[sy][sx + w] - cum[sy + h][sx] + cum[sy][sx];
     }
 
-    inline i64 at(int y, int x) const {
+    inline i64 operator() (int y, int x) const {
         return cum[y + 1][x + 1];
     }
 
-    inline i64& at(int y, int x) {
+    inline i64& operator() (int y, int x) {
         return cum[y + 1][x + 1];
     }
 
@@ -141,8 +139,8 @@ void test_CumulativeSum1D() // {{{
 
     cum.build();
 
-    outl(src);
-    outl(cum.data());
+    print(src);
+    print(cum.data());
 
     assert(cum.size() == 4);
     assert(cum[0] == 3);
@@ -179,27 +177,27 @@ void test_CumulativeSum1D() // {{{
     assert(cum.sum(1) == 0);
     assert(cum.sum(2) == 0);
 
-    outl(__func__, ": AC");
+    print(__func__, ": AC");
 } // }}}
 
 void test_CumulativeSum2D() // {{{
 {
     CumulativeSum2D mat(2, 2);
-    mat.at(0, 0) = 2;  mat.at(0, 1) = 1;
-    mat.at(1, 0) = 3;  mat.at(1, 1) = 5;
+    mat(0, 0) = 2;  mat(0, 1) = 1;
+    mat(1, 0) = 3;  mat(1, 1) = 5;
     assert(mat.height() == 2);
     assert(mat.width() == 2);
 
-    outl("--------");
-    outl(mat); // before
+    print("--------");
+    print(mat); // before
 
     mat.build();
 
-    outl("--------");
-    outl(mat); // after
+    print("--------");
+    print(mat); // after
 
-    assert(mat.at(0, 0) == 2); assert(mat.at(0, 1) == 3);
-    assert(mat.at(1, 0) == 5); assert(mat.at(1, 1) == 11);
+    assert(mat(0, 0) == 2); assert(mat(0, 1) == 3);
+    assert(mat(1, 0) == 5); assert(mat(1, 1) == 11);
 
     assert(mat.sum(0,0, 1,1) == 2);
     assert(mat.sum(0,0, 2,1) == 5);
@@ -219,14 +217,14 @@ void test_CumulativeSum2D() // {{{
     assert(mat.height() == 2);
     assert(mat.width() == 3);
 
-    mat.at(0, 0) = 1; mat.at(0, 1) = 2; mat.at(0, 2) = 3;
-    mat.at(1, 0) = 4; mat.at(1, 1) = 5; mat.at(1, 2) = 6;
+    mat(0, 0) = 1; mat(0, 1) = 2; mat(0, 2) = 3;
+    mat(1, 0) = 4; mat(1, 1) = 5; mat(1, 2) = 6;
 
     mat.build();
 
 
-    outl("---------------");
-    outl(mat);
+    print("---------------");
+    print(mat);
     cout.flush();
 
     assert(mat.sum({0, 0}, {1, 1}) == 1);
@@ -238,7 +236,7 @@ void test_CumulativeSum2D() // {{{
     assert(mat.sum({1, 0}, {2, 3}) == 15);
     assert(mat.sum({0, 0}, {2, 2}) == 12);
 
-    outl(__func__, ": AC");
+    print(__func__, ": AC");
 } // }}}
 
 
