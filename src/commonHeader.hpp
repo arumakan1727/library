@@ -30,6 +30,7 @@ template<class T, class U>inline bool chmin(T &a, const U &b){return b<a && (a=b
 inline i64  sigma(i64 n)                    { return (n * (n + 1) >> 1); }
 inline i64  divup(i64 a, i64 b)             { return (a + b - 1) / b; }
 inline bool inner(i64 a, i64 low, i64 high) { return (low <= a && a <= high); }
+inline i64  sqr(i64 n)                      { return n * n; }
 inline string to_string(char c)             { return string(1, c); }
 constexpr int INF  = 0x3f3f3f3f;
 constexpr i64 LINF = 0x3f3f3f3f3f3f3f3fLL;

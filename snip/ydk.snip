@@ -15,15 +15,15 @@ options     head, indent
 
 snippet     yesno
 abbr        yes, no
-    outl((${1}) ? "yes" : "no");
+    print((${1}) ? "yes" : "no");
 
 snippet     YesNo
 abbr        Yes, No
-    outl((${1}) ? "Yes" : "No");
+    print((${1}) ? "Yes" : "No");
 
 snippet     YESNO
 abbr        Yes, No
-    outl((${1}) ? "YES" : "NO");
+    print((${1}) ? "YES" : "NO");
 
 snippet     Heap
 abbr        priority_queue
