@@ -3,29 +3,42 @@ options     head
     // ModInt {{{
     template<int64_t MOD>
     class ModInt {
-        int64_t n;
+        int64_t value;
     public:
-        inline ModInt(const ModInt &o) noexcept : n(o.n) {}
-        inline ModInt(int64_t n = 0) noexcept : n((n >= MOD) ? (n % MOD) : (n < 0) ? ((n + MOD) % MOD) : n) {}
+        // constructor
+        inline ModInt(int64_t value = 0) noexcept :
+            value((value >= MOD) ? (value % MOD) : (value < 0) ? ((value + MOD) % MOD) : value) {}
     
-        inline ModInt inv() const noexcept { return pow(n, MOD-2); }
-    
-        inline ModInt& operator+=(ModInt o) noexcept { n = (n + o.n) % MOD; return *this; }
-        inline ModInt& operator-=(ModInt o) noexcept { n = (MOD + n - o.n) % MOD; return *this; }
-        inline ModInt& operator*=(ModInt o) noexcept { n = (n * o.n) % MOD; return *this; }
-        inline ModInt& operator/=(ModInt o) noexcept { n = (n * o.inv().n) % MOD; return *this; }
-        inline ModInt operator+(ModInt o) noexcept { return ModInt(*this) += o; }
-        inline ModInt operator-(ModInt o) noexcept { return ModInt(*this) -= o; }
-        inline ModInt operator*(ModInt o) noexcept { return ModInt(*this) *= o; }
-        inline ModInt operator/(ModInt o) noexcept { return ModInt(*this) /= o; }
-        inline bool operator==(ModInt o) const noexcept { return n == o.n; }
-        inline bool operator!=(ModInt o) const noexcept { return !(*this == o); }
-    
+        // プリミティブ整数型へのキャスト (型の明示:必要)
         template<class Int>
-        explicit inline operator Int() const noexcept { return static_cast<Int>(n); }
+        explicit inline operator Int() const noexcept { return static_cast<Int>(value); }
     
-        friend ostream& operator<<(ostream &os, ModInt o) noexcept { os << o.n; return os; }
-        friend istream& operator>>(istream &is, ModInt &o) noexcept  { is >> o.n; return is; }
+        inline ModInt inv() const noexcept {
+            return ModInt<MOD>::pow(value, MOD-2);
+        }
+    
+        inline ModInt& operator+=(ModInt x) noexcept {
+            value = (value + x.value) % MOD; return *this;
+        }
+        inline ModInt& operator-=(ModInt x) noexcept {
+            value = (MOD + value - x.value) % MOD; return *this;
+        }
+        inline ModInt& operator*=(ModInt x) noexcept {
+            value = (value * x.value) % MOD; return *this;
+        }
+        inline ModInt& operator/=(ModInt x) noexcept {
+            value = (value * x.inv().value) % MOD; return *this;
+        }
+    
+        inline ModInt operator+(ModInt x) const noexcept { return ModInt(*this) += x; }
+        inline ModInt operator-(ModInt x) const noexcept { return ModInt(*this) -= x; }
+        inline ModInt operator*(ModInt x) const noexcept { return ModInt(*this) *= x; }
+        inline ModInt operator/(ModInt x) const noexcept { return ModInt(*this) /= x; }
+        inline bool operator==(ModInt x) const noexcept { return value == x.value; }
+        inline bool operator!=(ModInt x) const noexcept { return !(this->operator==(x)); }
+    
+        friend ostream& operator<<(ostream &os, ModInt x) noexcept { os << x.value; return os; }
+        friend istream& operator>>(istream &is, ModInt &x) noexcept { is >> x.value; return is; }
     
         static constexpr inline ModInt pow(int64_t n, int64_t p) noexcept {
             int64_t ret = 1;
