@@ -20,15 +20,13 @@
 using namespace std;
 using i64 = int_fast64_t;
 using pii = pair<i64, i64>;
-template<class T> using MaxHeap = priority_queue<T>;
-template<class T> using MinHeap = priority_queue<T, vector<T>, greater<T>>;
 template<class T, class U>inline bool chmax(T &a, const U &b){return b>a && (a=b, true);}
 template<class T, class U>inline bool chmin(T &a, const U &b){return b<a && (a=b, true);}
-inline i64  sigma(i64 n)                    { return (n * (n + 1) >> 1); }
-inline i64  divup(i64 a, i64 b)             { return (a + b - 1) / b; }
-inline bool inner(i64 a, i64 low, i64 high) { return (low <= a && a <= high); }
-inline i64  sqr(i64 n)                      { return n * n; }
-inline string to_string(char c)             { return string(1, c); }
+inline i64  sigma(i64 n)            { return (n * (n + 1) >> 1); }
+inline i64  updiv(i64 a, i64 b)     { return (a + b - 1) / b; }
+inline i64  sqr(i64 n)              { return n * n; }
+inline string to_string(char c)     { return string(1, c); }
+inline bool   isRangeIn(i64 a, i64 low, i64 high) { return (low <= a && a <= high); }
 constexpr int INF  = 0x3f3f3f3f;
 constexpr i64 LINF = 0x3f3f3f3f3f3f3f3fLL;
 
