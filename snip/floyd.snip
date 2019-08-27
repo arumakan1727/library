@@ -1,6 +1,9 @@
 snippet     floyd
 alias       warshall warshallFloyd 
 options     head 
+    // [戻り値]
+    //      (不閉路あり) => -1
+    //      (不閉路なし) => 0
     template<size_t N>
     int floyd(MatrixGraph<N> &G, int V) // {{{
     {

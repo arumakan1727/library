@@ -1,5 +1,5 @@
 #include "bits/stdc++.h"
-#include "commonHeader.hpp"
+using namespace std;
 
 #ifndef INCLUDED_YDK_GRAPH_CPP
 #define INCLUDED_YDK_GRAPH_CPP
@@ -10,17 +10,29 @@
 //@ options  head
 struct Edge { // {{{
     int src, to;
-    i64 cost;
-    Edge(int src,  int to, i64 cost) : src(src), to(to), cost(cost) {}
-    Edge(int to, i64 cost = 0) : Edge(-1, to, cost) {}
-    Edge() {}
-    bool operator< (const Edge &o) const { return cost < o.cost; }
-    bool operator> (const Edge &o) const { return cost > o.cost; }
+    int64_t cost = 0;
+
+    inline Edge(int src,  int to, const int64_t &cost) noexcept :
+        src(src), to(to), cost(cost) {}
+
+    inline Edge(int to, const int64_t &cost) noexcept :
+       src(-1), to(to), cost(cost) {}
+
+    inline Edge() noexcept {}
+
+    bool operator< (const Edge &o) const noexcept { return cost < o.cost; }
+    bool operator> (const Edge &o) const noexcept { return o < *this; }
+
+    Edge& operator=(int to) noexcept {
+        this->to = to;
+        return *this;
+    }
+
+    operator int() const noexcept { return to; }
 };
-using Edges = vector<Edge>;
-using WGraph = vector<vector<Edge>>;
-using UGraph = vector<vector<int>>;
 // }}}
+using WeightedGraph     = vector<vector<Edge>>;
+using UnWeightedGraph   = vector<vector<int>>;
 //@@@@@@
 
 
@@ -29,14 +41,24 @@ using UGraph = vector<vector<int>>;
 //@ alias   matrixGraph
 //@ options  head
 template<size_t N>
-struct MatrixGraph { // {{{
-    i64 G[N][N];
-    constexpr explicit MatrixGraph() {
-        for (int i = 0; i < N; ++i) for (int j = 0; j < N; ++j) G[i][j] = LINF;
+class MatrixGraph { // {{{
+    int64_t G[N][N];
+
+public:
+    constexpr MatrixGraph() noexcept { init(); }
+
+    inline void init() noexcept {
+        memset(G, 0x3f, sizeof(G));
         for (int i = 0; i < N; ++i) G[i][i] = 0;
     }
-    i64* operator[] (size_t i) { return G[i]; }
-    const i64* operator[] (size_t i) const { return G[i]; }
+
+    int64_t* operator[](int i) noexcept {
+        return G[i];
+    }
+
+    const int64_t* operator[] (int i) const noexcept {
+        return G[i];
+    }
 };
 // }}}
 //@@@@@@@@
@@ -46,11 +68,11 @@ struct MatrixGraph { // {{{
 //@ snippet dfs_arrivable
 //@ alias   arrivable
 //@ options head
-void dfs_arrivable(int u, const WGraph &G, bool visited[]) // {{{
-{
+template<class GraphType>
+void dfs_arrivable(int u, const GraphType &G, bool visited[]) { // {{{
     if (!visited[u]) {
         visited[u] = true;
-        for (const auto &e : G[u]) dfs_arrivable(e.to, G, visited);
+        for (const int to : G[u]) dfs_arrivable(to, G, visited);
     }
 } // }}}
 //@@@@@@@@@@

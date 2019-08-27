@@ -1,29 +1,37 @@
 #include "bits/stdc++.h"
-#include "./commonHeader.hpp"
+using namespace std;
 
 #include "./graphTemplate.cpp"
 
 //@@@@@@@
 //@ snippet dijkstra
 //@ options head
-vector<i64> dijkstra(const WGraph &G, int src) // {{{
+template<class Compare = less<>, int64_t INF = 0x3f3f3f3f3f3f3f3fLL>
+vector<int64_t> dijkstra(const WeightedGraph &G, const vector<int> &startNodes) // {{{
 {
-    vector<i64> dist(G.size(), LINF);
-    priority_queue<pii, vector<pii>, greater<pii>> pq;
+    using pii = pair<int64_t, int>;
+    const auto isBetter = Compare();
 
-    dist[src] = 0;
-    pq.emplace(0, src);
+    vector<int64_t> dist(G.size(), INF);
+    priority_queue<pii, vector<pii>, Compare> pq;
+
+    for (const int startNode : startNodes) {
+        dist[startNode] = 0LL;
+        pq.emplace(-0LL, startNode);
+    }
 
     while(!pq.empty()) {
-        const i64 nowCost = pq.top().first;
-        const int nowNode = pq.top().second;
+        const int64_t nowCost = -(pq.top().first);
+        const int     nowNode = pq.top().second;
         pq.pop();
-        if (dist[nowNode] < nowCost) continue;
+
+        if (isBetter(dist[nowNode], nowCost)) continue;
 
         for (const auto &e : G[nowNode]) {
-            const i64 newCost = nowCost + e.cost;
-            if (chmin(dist[e.to], newCost)) {
-                pq.emplace(newCost, e.to);
+            const int64_t newCost = nowCost + e.cost;
+            if (isBetter(newCost, dist[e.to])) {
+                dist[e.to] = newCost;
+                pq.emplace(-newCost, e.to);
             }
         }
     }

@@ -1,5 +1,5 @@
 #include "bits/stdc++.h"
-#include "commonHeader.hpp"
+using namespace std;
 
 #include "unionFind.cpp"
 #include "graphTemplate.cpp"
@@ -10,10 +10,10 @@
 //@@@@@@@@@@
 //@ snippet kruskal
 //@ options head
-i64 kruskal(Edges &es, int V) // {{{
+int64_t kruskal(vector<Edge> &es, int V) // {{{
 {
     UnionFind uf(V);
-    i64 costSum = 0;
+    int64_t costSum = 0;
 
     sort(es.begin(), es.end());
     for (const auto &e : es) {
