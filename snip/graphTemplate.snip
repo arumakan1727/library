@@ -5,19 +5,19 @@ options     head
         int src, to;
         int64_t cost = 0;
     
-        inline Edge(int src,  int to, const int64_t &cost) noexcept :
-            src(src), to(to), cost(cost) {}
+        inline Edge(int s,  int t, int64_t c) noexcept :
+            src(s), to(t), cost(c) {}
     
-        inline Edge(int to, const int64_t &cost) noexcept :
-           src(-1), to(to), cost(cost) {}
+        inline Edge(int t, int64_t c) noexcept :
+           src(-1), to(t), cost(c) {}
     
         inline Edge() noexcept {}
     
         bool operator< (const Edge &o) const noexcept { return cost < o.cost; }
         bool operator> (const Edge &o) const noexcept { return o < *this; }
     
-        Edge& operator=(int to) noexcept {
-            this->to = to;
+        Edge& operator=(int rhs_to) noexcept {
+            this->to = rhs_to;
             return *this;
         }
     
