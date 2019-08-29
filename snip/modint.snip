@@ -6,8 +6,8 @@ options     head
         int64_t value;
     public:
         // constructor
-        inline ModInt(int64_t value = 0) noexcept :
-            value((value >= MOD) ? (value % MOD) : (value < 0) ? ((value + MOD) % MOD) : value) {}
+        inline ModInt(int64_t val = 0) noexcept :
+            value((val >= MOD) ? (val % MOD) : (val < 0) ? ((val + MOD) % MOD) : val) {}
     
         // プリミティブ整数型へのキャスト (型の明示:必要)
         template<class Int>
