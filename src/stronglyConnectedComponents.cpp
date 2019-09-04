@@ -7,17 +7,23 @@ using namespace std;
 template<class GraphType>
 class StronglyConnectedComponents {
 private:
-    using IntVec = vector<int>;
-    const GraphType &G;
     const int V;
+    const GraphType &G;
+    UnWeightedGraph rG;
     vector<int> sccID;
     const int sccCnt;
 
 public:
     StronglyConnectedComponents(const GraphType &g) noexcept :
-        G(g), V(g.size()),
+        V(g.size()),
+        G(g), rG(V),
         sccID(V, -1),
-        sccCnt(build()) {}
+        sccCnt(build())
+        {
+            for (int i = 0; i < V; ++i) {
+                for (const auto &e : G[i]) rG[int(e)].push_back(i);
+            }
+        }
 
     inline int operator[](int v) const noexcept {
         return sccID[v];
@@ -27,8 +33,8 @@ public:
         return sccCnt;
     }
 
-private:
-    void dfs(int v, IntVec &visitedNodes, IntVec &used) noexcept {
+private: // {{{
+    void dfs(int v, vector<int> &visitedNodes, vector<int> &used) noexcept {
         if (used[v]++) return;
         for (const int nxt : G[v]) dfs(nxt);
         visitedNodes.push_back(v);
@@ -55,4 +61,5 @@ private:
 
         return cnt;
     }
+    // }}}
 };
