@@ -1,32 +1,42 @@
 #include "./bits/stdc++.h"
 using namespace std;
 
-template<class GridType>
-auto gridBFS(const GridType &grid, int H, int W, pair<int,int> startYX) -> vector<vector<int>>
+//@@@@@@@@@@
+//@ snippet gridBFS
+//@ alias   matrixBFS
+//@ options head
+auto gridBFS(const vector<string> &grid, const vector<pair<int,int>> &starts, const string &walls)
+    -> vector<vector<int>>
 {
-    constexpr array<int, 4> dy {1, 0, -1, 0};
-    constexpr array<int, 4> dx {0, 1, 0, -1};
+    static constexpr array<int, 4> dy {1, 0, -1, 0};
+    static constexpr array<int, 4> dx {0, 1, 0, -1};
     static_assert(dy.size() == dx.size(), "Length of dy[], dx[] is different!");
-    const int startY = startYX.first;
-    const int startX = startYX.second;
+
+    const int H = grid.size();
+    const int W = grid[0].size();
     vector<vector<int>> dist(H, vector<int>(W, -1));
     queue<pair<int,int>> que;
 
-    dist[startY][startX] = 0;
-    que.emplace(startY, startX);
+    for (const auto &e : starts) {
+        dist[e.first][e.second] = 0;
+        que.emplace(e.first, e.second);
+    }
+
     while(!que.empty()) {
-        const int nowY = que.front().first;
-        const int nowX = que.front().second;
+        const int curY = que.front().first;
+        const int curX = que.front().second;
         que.pop();
         for (int i = 0; i < dy.size(); ++i) {
-            const int ny = nowY + dy[i];
-            const int nx = nowX + dx[i];
+            const int ny = curY + dy[i];
+            const int nx = curX + dx[i];
             if (ny < 0 || nx < 0 || ny >= H || nx >= W) continue;
             if (grid[ny][nx] != -1) continue;
-            dist[ny][nx] = dist[nowY][nowX] + 1;
+            if (walls.find(grid[ny][nx]) != string::npos) continue;
+            dist[ny][nx] = dist[curY][curX] + 1;
             que.emplace(ny, nx);
         }
     }
 
     return dist;
 }
+//@@@@@@@@@@
