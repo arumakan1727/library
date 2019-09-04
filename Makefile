@@ -1,5 +1,5 @@
 CXX := g++
-CXX_OPTION ?= "-std=c++14 -O2 -lm -Wall -Wextra -Wno-sign-compare -Wno-char-subscripts"
+CXX_OPTION ?= -std=c++14 -O2 -lm -Wall -Wextra -Wno-sign-compare -Wno-char-subscripts
 
 SRC := $(wildcard src/*.cpp)
 SNIP_NODIR := $(notdir $(SRC:%.cpp=%.snip))
