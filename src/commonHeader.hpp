@@ -9,13 +9,13 @@
 #define reps(i, s, t)   for (i64 i = (s), i##_limit = (t); i <= i##_limit; ++i)
 #define repr(i, s, t)   for (i64 i = (s), i##_limit = (t); i >= i##_limit; --i)
 #define var(Type, ...)  Type __VA_ARGS__; input(__VA_ARGS__)
-#define lowerBound(...)                 _lowerBound(__VA_ARGS__)
-#define upperBound(...)                 _upperBound(__VA_ARGS__)
-#define _lowerBound(begin, end, ...)    (lower_bound((begin), (end), __VA_ARGS__) - (begin))
-#define _upperBound(begin, end, ...)    (upper_bound((begin), (end), __VA_ARGS__) - (begin))
+#define lowerBound(...)                 lowerBound_(__VA_ARGS__)
+#define upperBound(...)                 upperBound_(__VA_ARGS__)
+#define lowerBound_(begin, end, ...)    (lower_bound((begin), (end), __VA_ARGS__) - (begin))
+#define upperBound_(begin, end, ...)    (upper_bound((begin), (end), __VA_ARGS__) - (begin))
 
 #ifdef DBG
-#define trace(...) _trace(#__VA_ARGS__, __VA_ARGS__)
+#define trace(...) trace_g(#__VA_ARGS__, __VA_ARGS__)
 #else
 #define trace(...)
 #endif
@@ -71,19 +71,19 @@ ostream& operator<< (ostream &out, const vector<vector<T>> &mat) {
 }
 
 template <class T>
-void _trace(const char *s, T&& x) {
+void trace_g(const char *s, T&& x) {
     clog << '{';
     while(*s != '\0') clog << *(s++);
     clog << ":" << setw(3) << x << '}' << endl;
 }
 
 template <class Head, class... Tail>
-void _trace(const char *s, Head&& head, Tail&&... tail) {
+void trace_g(const char *s, Head&& head, Tail&&... tail) {
     clog << '{';
     while(*s != ',') clog << *(s++);
     clog << ":" << setw(3) << head << "}, ";
     for (++s; !isgraph(*s); ++s);
-    _trace(s, std::forward<Tail>(tail)...);
+    trace_g(s, std::forward<Tail>(tail)...);
 }
 // }}} End Header
 
