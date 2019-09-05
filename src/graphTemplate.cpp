@@ -30,6 +30,29 @@ using WeightedGraph     = vector<vector<Edge>>;
 using UnWeightedGraph   = vector<vector<int>>;
 //@@@@@@
 
+class Graph : public vector<vector<Edge>> {
+    using super = vector<vector<Edge>>;
+public:
+    Graph() noexcept {}
+    Graph(int V) noexcept : super(V + 1) {}
+
+    Graph& addEdge(int from, int to, int64_t cost = 0) noexcept {
+        super::operator[](from).emplace_back(from, to, cost);
+        return *this;
+    }
+
+    Graph reverseGraph() const noexcept {
+        const int V = super::size();
+        Graph revG(V);
+        for (int i = 0; i < V; ++i) {
+            const auto &nodes = super::operator[](i);
+            revG.reserve(nodes.size());
+            for (const auto &e : nodes) revG.emplace_back(e.to, e.src, e.cost);
+        }
+        return revG;
+    }
+};
+
 //@@@@@@@
 //@ snippet MatrixGraph
 //@ alias   matrixGraph

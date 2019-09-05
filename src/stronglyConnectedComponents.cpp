@@ -11,17 +11,32 @@ private:
     const GraphType &G;
     UnWeightedGraph rG;
     vector<int> sccID;
-    const int sccCnt;
+    int sccCnt;
 
 public:
     StronglyConnectedComponents(const GraphType &g) noexcept :
         V(g.size()),
         G(g), rG(V),
         sccID(V, -1),
-        sccCnt(build())
+        sccCnt(0)
         {
+            // construct reverce graph
             for (int i = 0; i < V; ++i) {
                 for (const auto &e : G[i]) rG[int(e)].push_back(i);
+            }
+
+            // prepare
+            sccCnt = 0;
+            vector<int> used(V, 0);
+            vector<int> visitedNodes;
+            visitedNodes.reserve(V);
+
+            // build
+            for (int i = 0; i < V; ++i) {
+                dfs(V, visitedNodes, used);
+            }
+            for (auto it = visitedNodes.crbegin(); it != visitedNodes.crend(); ++it) {
+                if (sccID[*it] == -1) rdfs(*it, sccCnt++);
             }
         }
 
@@ -33,6 +48,8 @@ public:
         return sccCnt;
     }
 
+
+
 private: // {{{
     void dfs(int v, vector<int> &visitedNodes, vector<int> &used) noexcept {
         if (used[v]++) return;
@@ -43,23 +60,7 @@ private: // {{{
     void rdfs(int v, int cnt) noexcept {
         if (sccID[v] != -1) return;
         sccID[v] = cnt;
-        for (const int nxt : G[v]) rdfs(v, cnt);
-    }
-
-    int build() noexcept {
-        int cnt = 0;
-        vector<int> used(V, 0);
-        vector<int> visitedNodes;
-        visitedNodes.reserve(V);
-
-        for (int i = 0; i < V; ++i) {
-            dfs(V, visitedNodes, used);
-        }
-        for (auto it = visitedNodes.crbegin(); it != visitedNodes.crend(); ++it) {
-            if (sccID[*it] == -1) rdfs(*it, cnt++);
-        }
-
-        return cnt;
+        for (const int nxt : rG[v]) rdfs(v, cnt);
     }
     // }}}
 };
