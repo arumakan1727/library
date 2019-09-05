@@ -12,29 +12,23 @@ struct Edge { // {{{
     int src, to;
     int64_t cost = 0;
 
-    inline Edge(int s,  int t, int64_t c) noexcept :
-        src(s), to(t), cost(c) {}
-
-    inline Edge(int t, int64_t c) noexcept :
-       src(-1), to(t), cost(c) {}
-
     inline Edge() noexcept {}
+    inline Edge(int s,  int t, int64_t c) noexcept : src(s), to(t), cost(c) {}
 
     bool operator< (const Edge &o) const noexcept { return cost < o.cost; }
     bool operator> (const Edge &o) const noexcept { return o < *this; }
+
+    operator int() const noexcept { return to; }
 
     Edge& operator=(int rhs_to) noexcept {
         this->to = rhs_to;
         return *this;
     }
-
-    operator int() const noexcept { return to; }
 };
 // }}}
 using WeightedGraph     = vector<vector<Edge>>;
 using UnWeightedGraph   = vector<vector<int>>;
 //@@@@@@
-
 
 //@@@@@@@
 //@ snippet MatrixGraph
