@@ -11,13 +11,14 @@ class DoublingLCA { // {{{
 public:
     const int V;
     const int LOG_V;
-    WeightedGraph G;
+    Graph G;
     vector<int> depth;
     vector<int64_t> weightSum;
     vector<vector<int>> table;  // table[k][v] = ノード v から根へ 2^k だけ登った先のノード番号
 
     DoublingLCA() = delete;
 
+    // ノード番号 [0, n] を管理する
     DoublingLCA(int n) :
         V(n + 1),
         LOG_V(32 - __builtin_clz(V)),   // ceil(log2(V))
@@ -28,13 +29,13 @@ public:
 
 
     // u-v間に無向辺を張る。重みは省略可
-    inline void addEdge(int u, int v, int64_t weight = 0) {
+    inline void addEdge(int u, int v, int64_t weight = 0) noexcept {
         G[u].emplace_back(u, v, weight);
         G[v].emplace_back(v, u, weight);
     }
 
     // 前計算
-    void build(int root) {
+    void build(int root) noexcept {
         dfs(root, -1, 0, 0);
         for (int k = 0; (k + 1) < LOG_V; ++k) {
             for (int v = 0; v < V; ++v) {
@@ -45,7 +46,7 @@ public:
     }
 
     // u,v のLCAを求める
-    inline int lca(int u, int v) const {
+    inline int lca(int u, int v) const noexcept {
         if (depth[u] > depth[v]) swap(u, v);
         for (int i = LOG_V - 1; i >= 0; --i) {
             if ((depth[v] - depth[u]) & (1 << i)) v = table[i][v];
@@ -63,7 +64,7 @@ public:
     }
 
     // v から根へ k だけ登った先のノードを求める
-    inline int climb(int v, int k) const {
+    inline int climb(int v, int k) const noexcept {
         int i = 0;
         while(k > 0) {
             if (k & 1) v = table[i][v];
@@ -74,17 +75,17 @@ public:
     }
 
     // u-v間のパスの重みの和を求める
-    inline int pathWeight(int u, int v) const {
+    inline int pathWeight(int u, int v) const noexcept {
         return weightSum[u] + weightSum[v] - 2 * weightSum[lca(u, v)];
     }
 
     // u-v間のパスの「エッジの個数」を求める
-    inline int pathLength(int u, int v) const {
+    inline int pathLength(int u, int v) const noexcept {
         return depth[u] + depth[v] - 2 * depth[lca(u, v)];
     }
 
 private:
-    void dfs(int v, int par, int dep, int64_t ws) {
+    void dfs(int v, int par, int dep, int64_t ws) noexcept {
         depth[v] = dep;
         weightSum[v] = ws;
         table[0][v] = par;
