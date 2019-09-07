@@ -1,5 +1,5 @@
 #define PROBLEM https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/1/GRL_1_B
-// Verified On: 2019-08-27
+// Verified On: 2019-09-07
 
 #include "../src/bits/stdc++.h"
 #include "../src/commonHeader.hpp"
@@ -13,14 +13,14 @@ signed main()
 
     int V, E, src; cin >> V >> E >> src;
 
-    WeightedGraph G(V);
+    Graph G(V);
     rep(i, E) {
         int s, t, w;
         cin >> s >> t >> w;
-        G[s].emplace_back(s, t, w);
+        G << Edge{s, t, w};
     }
 
-    const auto dist = bellmanFord<less<>, LINF>(G, src);
+    const vector<i64> dist = bellmanFord<less<>, LINF>(G, src);
 
     if (dist.empty()) {
         cout << "NEGATIVE CYCLE" << endl;

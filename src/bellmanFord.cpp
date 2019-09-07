@@ -13,7 +13,7 @@ using namespace std;
 //      startNodeからの距離を格納した vector。
 //      ただし、不閉路がある場合は空の vector {} を返す。
 template<class Compare = less<>, int64_t INF = 0x3f3f3f3f3f3f3f3fLL>
-vector<int64_t> bellmanFord(const WeightedGraph &G, int src) // {{{
+vector<int64_t> bellmanFord(const Graph &G, int src) // {{{
 {
     const auto isBetter = Compare();
     const auto grow = [&isBetter](int64_t &a, const int64_t b) -> bool {
