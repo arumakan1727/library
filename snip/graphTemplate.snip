@@ -1,37 +1,68 @@
-snippet     edge
-alias       graph 
+snippet     graph
 options     head 
     struct Edge { // {{{
         int src, to;
         int64_t cost = 0;
     
-        inline Edge(int s,  int t, int64_t c) noexcept :
-            src(s), to(t), cost(c) {}
-    
-        inline Edge(int t, int64_t c) noexcept :
-           src(-1), to(t), cost(c) {}
-    
         inline Edge() noexcept {}
+        inline Edge(int s,  int t, int64_t c = 0) noexcept : src(s), to(t), cost(c) {}
     
-        bool operator< (const Edge &o) const noexcept { return cost < o.cost; }
-        bool operator> (const Edge &o) const noexcept { return o < *this; }
+        inline bool operator< (const Edge &rhs) const noexcept { return cost < rhs.cost; }
+        inline bool operator> (const Edge &rhs) const noexcept { return rhs < *this; }
     
-        Edge& operator=(int rhs_to) noexcept {
+        inline operator int() const noexcept { return to; }
+    
+        inline Edge& operator=(int rhs_to) noexcept {
             this->to = rhs_to;
             return *this;
         }
-    
-        operator int() const noexcept { return to; }
     };
     // }}}
-    using WeightedGraph     = vector<vector<Edge>>;
-    using UnWeightedGraph   = vector<vector<int>>;
+    
+    class Graph : public vector<vector<Edge>> { // {{{
+        using super = vector<vector<Edge>>;
+    public:
+        Graph() noexcept {}
+        Graph(int V) noexcept : super(V + 1) {}
+    
+        Graph& addEdge(int from, int to, int64_t cost = 0) noexcept {
+            super::operator[](from).emplace_back(from, to, cost);
+            return *this;
+        }
+    
+        inline Graph& operator<<(const Edge &e) noexcept {
+            super::operator[](e.src).emplace_back(e);
+            return *this;
+        }
+    
+        Graph reverseGraph() const noexcept {
+            const int V = super::size();
+            Graph revG(V);
+            for (int i = 0; i < V; ++i) {
+                const auto &nodes = super::operator[](i);
+                revG.reserve(nodes.size());
+                for (const auto &e : nodes) revG[e.to].emplace_back(e.to, i, e.cost);
+            }
+            return revG;
+        }
+    
+        friend ostream& operator<<(ostream &out, const Graph &g) {
+            for (int i = 0; i < g.size(); ++i) {
+                out << '[' << setw(2) << i << ']';
+                for (const auto &e : g[i]) {
+                    out << ' ' << setw(2) << e.to;
+                }
+                out << '\n';
+            }
+            return out;
+        }
+    }; // }}}
 
 
 snippet     MatrixGraph
 alias       matrixGraph 
 options     head 
-    template<size_t N>
+    template <size_t N>
     class MatrixGraph { // {{{
         int64_t G[N][N];
     
@@ -57,12 +88,33 @@ options     head
 snippet     dfs_arrivable
 alias       arrivable 
 options     head 
-    template<class GraphType>
-    void dfs_arrivable(int u, const GraphType &G, bool visited[]) { // {{{
-        if (!visited[u]) {
-            visited[u] = true;
-            for (const int to : G[u]) dfs_arrivable(to, G, visited);
+    template <class BoolArray>
+    void dfs_reachable(const Graph &G, int v, BoolArray &visited) { // {{{
+        if (!visited[v]) {
+            visited[v] = true;
+            for (const int to : G[v]) dfs_reachable(G, to, visited);
         }
     } // }}}
+
+
+snippet     onlyReachableNode
+alias       filter_onlyReachableNode 
+options     head 
+    Graph filter_onlyReachableNode(const Graph &g, int startNode) {
+        const int V = g.size();
+        vector<uint8_t> visited(V, 0u);
+        Graph filteredGraph(V);
+    
+        dfs_reachable(g, startNode, visited);
+    
+        for (int i = 0; i < V; ++i) {
+            if (!visited[i]) continue;
+            for (const Edge &e : g[i]) {
+                if (visited[e.to]) filteredGraph << e;
+            }
+        }
+    
+        return filteredGraph;
+    }
 
 
