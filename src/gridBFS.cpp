@@ -30,7 +30,7 @@ auto gridBFS(const vector<string> &grid, const vector<pair<int,int>> &starts, co
             const int ny = curY + dy[i];
             const int nx = curX + dx[i];
             if (ny < 0 || nx < 0 || ny >= H || nx >= W) continue;
-            if (grid[ny][nx] != -1) continue;
+            if (dist[ny][nx] != -1) continue;
             if (walls.find(grid[ny][nx]) != string::npos) continue;
             dist[ny][nx] = dist[curY][curX] + 1;
             que.emplace(ny, nx);
