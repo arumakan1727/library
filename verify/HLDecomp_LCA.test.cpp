@@ -1,5 +1,5 @@
 #define PROBLEM https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/5/GRL_5_C
-// Verified On: 2019-08-31
+// Verified On: 2019-09-07
 
 #include "../src/bits/stdc++.h"
 #include "../src/commonHeader.hpp"

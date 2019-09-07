@@ -10,7 +10,7 @@ using namespace std;
 class HeavyLightDecomposition { // {{{
 public:
     const int V;                // ノード数
-    WeightedGraph G;            // 重み付きグラフ
+    Graph G;                    // グラフ
     vector<int> parent;         // 親
     vector<int> treeSize;       // 自分も含めた部分木のサイズ
     vector<int> head;           // HL分解後の自分が属するグループ(チェイン)の先頭ノード
@@ -22,7 +22,7 @@ public:
     HeavyLightDecomposition() = delete;
 
     // 空の木を構築する。管理できるノードは [0, V]。
-    explicit HeavyLightDecomposition(int n) :
+    explicit HeavyLightDecomposition(int n) noexcept :
         V(n + 1),
         G(V),
         parent(V, -1), treeSize(V), head(V),
@@ -32,13 +32,13 @@ public:
 
 
     // u-v間に無向辺を張る。重みは省略可
-    inline void addEdge(int u, int v, int64_t weight = 0) {
+    inline void addEdge(int u, int v, int64_t weight = 0) noexcept {
         G[u].emplace_back(u, v, weight);
         G[v].emplace_back(v, u, weight);
     }
 
     // 根を root としてHL分解、その他もろもろ前計算
-    inline void build(int root) {
+    inline void build(int root) noexcept {
         int timestamp = 0;
         head[root] = root;
         dfs_treeSize(root);
@@ -46,7 +46,7 @@ public:
     }
 
     // u,v の最小共通祖先を求める
-    inline int lca(int u, int v) const {
+    inline int lca(int u, int v) const noexcept {
         while(head[u] != head[v]) {
             if (vid[u] > vid[v]) swap(u, v);
             v = parent[head[v]];
@@ -55,7 +55,7 @@ public:
     }
 
     // v から根へ k だけ登った先のノードを求める
-    inline int climb(int v, int k) const {
+    inline int climb(int v, int k) const noexcept {
         while(1) {
             const int h = head[v];
             if (vid[v] - k >= vid[h]) return nodeOfVid[vid[v] - k];
@@ -65,12 +65,12 @@ public:
     }
 
     // u-v間のパスの重みの和を求める
-    inline int64_t pathWeight(int u, int v) const {
+    inline int64_t pathWeight(int u, int v) const noexcept {
         return weightSum[u] + weightSum[v] - 2 * weightSum[lca(u, v)];
     }
 
     // u-v間のパスの「エッジの個数」を求める
-    inline int pathLength(int u, int v) const {
+    inline int pathLength(int u, int v) const noexcept {
         return depth[u] + depth[v] - 2 * depth[lca(u, v)];
     }
 
@@ -78,7 +78,7 @@ private: // {{{
 
     // treeSize[v], parent[v], depth[v], weightSum[v] を再帰によって計算
     // v の子の中で最もheavyなやつを G[v] の先頭にもってくる
-    int dfs_treeSize(int v) {
+    int dfs_treeSize(int v) noexcept {
         treeSize[v] = 1;
         if (!G[v].empty() && G[v].front().to == parent[v]) swap(G[v].front(), G[v].back());
         for (auto &e : G[v]) {
@@ -94,7 +94,7 @@ private: // {{{
 
     // G[v] の先頭に v の子中で最もheavyなノードがある前提でHL分解し、
     // vid[v], nodeOfVid[v], head[v] を求める
-    void dfs_HLDecomp(int v, int &timestamp) {
+    void dfs_HLDecomp(int v, int &timestamp) noexcept {
         vid[v] = timestamp;
         nodeOfVid[timestamp] = v;
         ++timestamp;
