@@ -5,8 +5,7 @@
 #define INCLUDED_YDK_SEGMENT_TREE_CPP
 
 //@@@@@@@@@@@
-//@ snippet segTree
-//@ alias   segtree segmentTree
+//@ snippet SegmentTree
 //@ options head
 template<class Monoid> struct SegmentTree { // {{{
     using Func = function<Monoid(Monoid, Monoid)>;
