@@ -6,16 +6,6 @@
 #define reps(i, s, t)   for (i64 i = (s), i##_limit = (t); i <= i##_limit; ++i)
 #define repr(i, s, t)   for (i64 i = (s), i##_limit = (t); i >= i##_limit; --i)
 #define var(Type, ...)  Type __VA_ARGS__; input(__VA_ARGS__)
-#define lowerBound(...)                 lowerBound_(__VA_ARGS__)
-#define upperBound(...)                 upperBound_(__VA_ARGS__)
-#define lowerBound_(begin, end, ...)    (lower_bound((begin), (end), __VA_ARGS__) - (begin))
-#define upperBound_(begin, end, ...)    (upper_bound((begin), (end), __VA_ARGS__) - (begin))
-
-#ifdef DBG
-#define trace(...) trace_g(#__VA_ARGS__, __VA_ARGS__)
-#else
-#define trace(...)
-#endif
 
 using namespace std;
 using i64 = int_fast64_t;
@@ -26,61 +16,78 @@ inline i64  sigma(i64 n)            { return (n * (n + 1) >> 1); }
 inline i64  updiv(i64 a, i64 b)     { return (a + b - 1) / b; }
 inline i64  sqr(i64 n)              { return n * n; }
 inline string to_string(char c)     { return string(1, c); }
-inline bool   isRangeIn(i64 a, i64 low, i64 high) { return (low <= a && a <= high); }
 constexpr int INF  = 0x3f3f3f3f;
 constexpr i64 LINF = 0x3f3f3f3f3f3f3f3fLL;
 
-template<class T>
-vector<T> makeVec(size_t sz) { return vector<T>(sz); }
+template <class T>
+inline vector<T> makeVec(size_t sz) { return vector<T>(sz); }
 
-template<class T, class... Args>
-auto makeVec(size_t sz, Args... args) {
+template <class T, class... Args>
+inline auto makeVec(size_t sz, Args... args) {
     return vector<decltype(makeVec<T>(args...))>(sz, makeVec<T>(args...));
 }
 
-template<class T>
+template <typename T, typename V>
+typename enable_if<is_class<T>::value == 0>::type
+fill_v(T &t, const V &v) { t = v; }
+
+template <typename T, typename V>
+typename enable_if<is_class<T>::value != 0>::type
+fill_v(T &t, const V &v) {
+    for(auto &e:t) fill_v(e,v);
+}
+
+template <class T>
 inline void input(T &x) { cin >> x; }
 
-template<class Head, class... Tail>
+template <class T>
+inline void input(vector<T> &vec) { for (auto &e : vec) cin >> e; }
+
+template <class Head, class... Tail>
 inline void input(Head &head, Tail&... tail) { cin >> head; input(tail...); }
 
 inline void print() { cout << "\n"; }
 
-template<class Head, class... Tail>
+template <class Head, class... Tail>
 inline void print(Head &&head, Tail&&... tail) {
     cout << head;
     if (sizeof...(tail)) cout << ' ';
     print(forward<Tail>(tail)...);
 }
 
-template<class T>
-ostream& operator<< (ostream &out, const vector<T> &vec) {
+template <class T, class U>
+inline ostream& operator<< (ostream &out, const pair<T, U> &p) {
+    return out << p.first << ' ' << p.second;
+}
+
+template <class T>
+inline ostream& operator<< (ostream &out, const vector<T> &vec) {
     static constexpr const char *delim[] = { " ", "" };
     for (const auto &e : vec) out << e << delim[&e == &vec.back()];
     return out;
 }
 
-template<class T>
-ostream& operator<< (ostream &out, const vector<vector<T>> &mat) {
+template <class T>
+inline ostream& operator<< (ostream &out, const vector<vector<T>> &mat) {
     static constexpr const char *tail[] = { "\n", "" };
     for (const auto &row : mat) out << row << tail[&row == &mat.back()];
     return out;
 }
 
 template <class T>
-void trace_g(const char *s, T&& x) {
+void trace_(const char *s, T&& x) {
     clog << '{';
     while(*s != '\0') clog << *(s++);
     clog << ":" << setw(3) << x << '}' << endl;
 }
 
 template <class Head, class... Tail>
-void trace_g(const char *s, Head&& head, Tail&&... tail) {
+void trace_(const char *s, Head&& head, Tail&&... tail) {
     clog << '{';
     while(*s != ',') clog << *(s++);
     clog << ":" << setw(3) << head << "}, ";
     for (++s; !isgraph(*s); ++s);
-    trace_g(s, std::forward<Tail>(tail)...);
+    trace_(s, std::forward<Tail>(tail)...);
 }
 // }}} End Header
 
