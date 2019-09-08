@@ -7,7 +7,7 @@ using namespace std;
 //@ snippet dijkstra
 //@ options head
 template<class Compare = less<>, int64_t INF = 0x3f3f3f3f3f3f3f3fLL>
-vector<int64_t> dijkstra(const WeightedGraph &G, const vector<int> &startNodes) // {{{
+vector<int64_t> dijkstra(const Graph &G, const vector<int> &startNodes) // {{{
 {
     using pii = pair<int64_t, int>;
     const auto isBetter = Compare();
