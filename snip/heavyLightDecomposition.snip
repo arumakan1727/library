@@ -15,9 +15,9 @@ options     head
     
         HeavyLightDecomposition() = delete;
     
-        // 空の木を構築する。管理できるノードは [0, V]。
+        // 空の木を構築する。管理できるノードは [0, n)。
         explicit HeavyLightDecomposition(int n) noexcept :
-            V(n + 1),
+            V(n),
             G(V),
             parent(V, -1), treeSize(V), head(V),
             vid(V), nodeOfVid(V),
@@ -27,8 +27,8 @@ options     head
     
         // u-v間に無向辺を張る。重みは省略可
         inline void addEdge(int u, int v, int64_t weight = 0) noexcept {
-            G[u].emplace_back(u, v, weight);
-            G[v].emplace_back(v, u, weight);
+            G.addEdge(u, v, weight);
+            G.addEdge(v, u, weight);
         }
     
         // 根を root としてHL分解、その他もろもろ前計算

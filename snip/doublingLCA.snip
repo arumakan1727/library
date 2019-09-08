@@ -12,9 +12,9 @@ options     head
     
         DoublingLCA() = delete;
     
-        // ノード番号 [0, n] を管理する
+        // ノード番号 [0, n) を管理する
         DoublingLCA(int n) :
-            V(n + 1),
+            V(n),
             LOG_V(32 - __builtin_clz(V)),   // ceil(log2(V))
             G(V),
             depth(V),
@@ -24,8 +24,8 @@ options     head
     
         // u-v間に無向辺を張る。重みは省略可
         inline void addEdge(int u, int v, int64_t weight = 0) noexcept {
-            G[u].emplace_back(u, v, weight);
-            G[v].emplace_back(v, u, weight);
+            G.addEdge(u, v, weight);
+            G.addEdge(v, u, weight);
         }
     
         // 前計算
