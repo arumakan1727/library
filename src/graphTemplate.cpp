@@ -7,22 +7,20 @@ using namespace std;
 //@@@@@@@
 //@ snippet graph
 //@ options head
+// graph {{{
 struct Edge { // {{{
     int src, to;
     int64_t cost = 0;
 
     inline Edge() noexcept {}
-    inline Edge(int s,  int t, int64_t c = 0) noexcept : src(s), to(t), cost(c) {}
+    inline Edge(int s,  int t, int64_t c = 1) noexcept : src(s), to(t), cost(c) {}
 
-    inline bool operator< (const Edge &rhs) const noexcept { return cost < rhs.cost; }
-    inline bool operator> (const Edge &rhs) const noexcept { return rhs < *this; }
+    inline bool operator<(const Edge &rhs) const noexcept { return cost < rhs.cost; }
+    inline bool operator>(const Edge &rhs) const noexcept { return rhs < *this; }
 
     inline operator int() const noexcept { return to; }
 
-    inline Edge& operator=(int rhs_to) noexcept {
-        this->to = rhs_to;
-        return *this;
-    }
+    inline Edge& operator=(int rhs_to) noexcept { this->to = rhs_to; return *this; }
 };
 // }}}
 
@@ -30,27 +28,15 @@ class Graph : public vector<vector<Edge>> { // {{{
     using super = vector<vector<Edge>>;
 public:
     Graph() noexcept {}
-    Graph(int V) noexcept : super(V + 1) {}
+    Graph(int V) noexcept : super(V) {}
 
-    Graph& addEdge(int from, int to, int64_t cost = 0) noexcept {
+    Graph& addEdge(int from, int to, int64_t cost = 1) noexcept {
         super::operator[](from).emplace_back(from, to, cost);
         return *this;
     }
 
-    inline Graph& operator<<(const Edge &e) noexcept {
-        super::operator[](e.src).emplace_back(e);
-        return *this;
-    }
-
-    Graph reverseGraph() const noexcept {
-        const int V = super::size();
-        Graph revG(V);
-        for (int i = 0; i < V; ++i) {
-            const auto &nodes = super::operator[](i);
-            revG.reserve(nodes.size());
-            for (const auto &e : nodes) revG[e.to].emplace_back(e.to, i, e.cost);
-        }
-        return revG;
+    Graph& addEdge(const Edge &e) noexcept {
+        return addEdge(e.src, e.to, e.cost);
     }
 
     friend ostream& operator<<(ostream &out, const Graph &g) {
@@ -64,6 +50,7 @@ public:
         return out;
     }
 }; // }}}
+// }}}
 //@@@@@@
 
 
@@ -78,8 +65,8 @@ class MatrixGraph { // {{{
 public:
     constexpr MatrixGraph() noexcept { init(); }
 
-    inline void init() noexcept {
-        memset(G, 0x3f, sizeof(G));
+    inline constexpr void init() noexcept {
+        for (int i = 0; i < N; ++i) for (int j = 0; j < N; ++j) G[i][j] = 0x3f3f3f3f3f3f3f3f;
         for (int i = 0; i < N; ++i) G[i][i] = 0;
     }
 
@@ -93,6 +80,21 @@ public:
 };
 // }}}
 //@@@@@@@@
+
+//@@@@@@@@@@
+//@ snippet reverseGraph
+//@ options head
+Graph reverseGraph(const Graph &G) noexcept { // {{{
+    const int V = G.size();
+    Graph revG(V);
+    for (int i = 0; i < V; ++i) {
+        const auto &nodes = G[i];
+        revG.reserve(nodes.size());
+        for (const auto &e : nodes) revG.addEdge(e.to, i, e.cost);
+    }
+    return revG;
+} // }}}
+//@@@@@@@@@@
 
 
 //@@@@@@@@@@
@@ -112,7 +114,7 @@ void dfs_reachable(const Graph &G, int v, BoolArray &visited) { // {{{
 //@ snippet onlyReachableNode
 //@ alias   filter_onlyReachableNode
 //@ options head
-Graph filter_onlyReachableNode(const Graph &g, int startNode) {
+Graph filter_onlyReachableNode(const Graph &g, int startNode) noexcept { // {{{
     const int V = g.size();
     vector<uint8_t> visited(V, 0u);
     Graph filteredGraph(V);
@@ -122,12 +124,12 @@ Graph filter_onlyReachableNode(const Graph &g, int startNode) {
     for (int i = 0; i < V; ++i) {
         if (!visited[i]) continue;
         for (const Edge &e : g[i]) {
-            if (visited[e.to]) filteredGraph << e;
+            if (visited[e.to]) filteredGraph.addEdge(e);
         }
     }
 
     return filteredGraph;
-}
+} // }}}
 //@@@@@@@@@@
 
 #endif /* End of include-guard */
