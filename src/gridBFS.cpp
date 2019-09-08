@@ -5,7 +5,7 @@ using namespace std;
 //@ snippet gridBFS
 //@ alias   matrixBFS
 //@ options head
-auto gridBFS(const vector<string> &grid, const vector<pair<int,int>> &starts, const string &walls)
+auto gridBFS(const vector<string> &grid, const vector<pair<int,int>> &starts, const string &walls) // {{{
     -> vector<vector<int>>
 {
     static constexpr array<int, 4> dy {1, 0, -1, 0};
@@ -38,5 +38,5 @@ auto gridBFS(const vector<string> &grid, const vector<pair<int,int>> &starts, co
     }
 
     return dist;
-}
+} // }}}
 //@@@@@@@@@@
