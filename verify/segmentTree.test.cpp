@@ -1,5 +1,5 @@
 #define PROBLEM https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/2/DSL_2_A
-// Verified On: 2019-08-13
+// Verified On: 2019-09-08
 
 #include "../src/bits/stdc++.h"
 #include "../src/commonHeader.hpp"
@@ -14,7 +14,7 @@ signed main()
     int com, x, y;
 
     scanf("%d%d", &N, &Q);
-    SegTree<int> seg(N, (1LL << 31) - 1, [](int a, int b){ return min(a,b); });
+    SegmentTree<int> seg(N, (1LL << 31) - 1, [](int a, int b){ return min(a,b); });
 
     while(Q--) {
         scanf("%d%d%d", &com, &x, &y);
