@@ -1,5 +1,5 @@
 #define PROBLEM https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/1/GRL_1_B
-// Verified On: 2019-09-07
+// Verified On: 2019-09-08
 
 #include "../src/bits/stdc++.h"
 #include "../src/commonHeader.hpp"
@@ -17,7 +17,7 @@ signed main()
     rep(i, E) {
         int s, t, w;
         cin >> s >> t >> w;
-        G << Edge{s, t, w};
+        G.addEdge(s, t, w);
     }
 
     const vector<i64> dist = bellmanFord<less<>, LINF>(G, src);
