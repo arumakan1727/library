@@ -9,6 +9,7 @@
 #define reps(i, s, t)   for (i64 i = (s), i##_limit = (t); i <= i##_limit; ++i)
 #define repr(i, s, t)   for (i64 i = (s), i##_limit = (t); i >= i##_limit; --i)
 #define var(Type, ...)  Type __VA_ARGS__; input(__VA_ARGS__)
+#define trace(...)      trace_(#__VA_ARGS__, __VA_ARGS__)
 
 using namespace std;
 using i64 = int_fast64_t;
