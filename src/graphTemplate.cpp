@@ -62,6 +62,10 @@ template <size_t N>
 class MatrixGraph { // {{{
     int64_t G[N][N];
 
+    #ifdef DBG
+    #define constexpr /* disable constexpr */
+    #endif
+
 public:
     constexpr MatrixGraph() noexcept { init(); }
 
