@@ -47,6 +47,21 @@ inline ostream& operator<< (ostream &out, const vector<T> &vec) {
     for (const auto &e : vec) out << e << delim[&e == &vec.back()];
     return out;
 }
+
+template <typename Func>
+struct FixPoint : Func {
+    inline constexpr FixPoint(Func &&f) noexcept : Func(forward<Func>(f)) {}
+
+    template <typename... Args>
+    inline decltype(auto) operator()(Args &&... args) const {
+        return Func::operator()(*this, forward<Args>(args)...);
+    }
+};
+
+template< typename Func >
+inline decltype(auto) makeFixPoint(Func &&f) {
+    return FixPoint< Func >{forward< Func >(f)};
+}
 // }}} End Header
 
 signed main()
