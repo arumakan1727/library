@@ -13,7 +13,7 @@ struct BipartiteMatching { // {{{
 
     BipartiteMatching() {}
     BipartiteMatching(int N)
-        : G(N+1), match(N+1, -1), used(N+1, 0), dead(N+1, false) {};
+        : G(N), match(N, -1), used(N, 0), dead(N, false) {};
 
     void addEdge(int u, int v) {
         G[u].emplace_back(v);
@@ -64,7 +64,3 @@ struct BipartiteMatching { // {{{
     }
 }; // }}}
 //@@@@@@@@@@
-
-signed main()
-{
-}
