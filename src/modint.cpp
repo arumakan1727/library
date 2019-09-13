@@ -25,10 +25,12 @@ public:
     }
 
     inline ModInt& operator+=(ModInt x) noexcept {
-        value = (value + x.value) % MOD; return *this;
+        if ((value += x.value) >= MOD) value -= MOD;
+        return *this;
     }
     inline ModInt& operator-=(ModInt x) noexcept {
-        value = (MOD + value - x.value) % MOD; return *this;
+        if ((value -= x.value) < 0) value += MOD;
+        return *this;
     }
     inline ModInt& operator*=(ModInt x) noexcept {
         value = (value * x.value) % MOD; return *this;
