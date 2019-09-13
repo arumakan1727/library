@@ -63,7 +63,7 @@ options     head
             return weightSum[u] + weightSum[v] - 2 * weightSum[lca(u, v)];
         }
     
-        // u-v間のパスの「エッジの個数」を求める
+        // u-v間のパスの「辺の本数」を求める
         inline int pathLength(int u, int v) const noexcept {
             return depth[u] + depth[v] - 2 * depth[lca(u, v)];
         }
