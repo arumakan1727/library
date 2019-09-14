@@ -1,0 +1,152 @@
+#include "bits/stdc++.h"
+using namespace std;
+
+//@@@@@@@@@@
+//@ snippet geometry
+//@ options head
+// Geometry {{{
+constexpr double EPS = 1e-9;
+constexpr double PI = 3.141592653589793238;
+constexpr inline bool eq(double a, double b) noexcept { return fabs(a - b) < EPS; }
+
+// 2Dベクトル {{{
+struct Vec2 {
+    double x, y;
+
+    constexpr Vec2(double x = 0, double y = 0) noexcept : x(x), y(y) {}
+
+    inline constexpr Vec2& operator+=(Vec2 rhs) noexcept {
+        x += rhs.x; y += rhs.y;
+        return *this;
+    }
+    inline constexpr Vec2& operator-=(Vec2 rhs) noexcept {
+        x -= rhs.x; y -= rhs.y;
+        return *this;
+    }
+    inline constexpr Vec2& operator*=(double k) noexcept {
+        x *= k; y *= k;
+        return *this;
+    }
+    inline constexpr Vec2& operator/=(double k) noexcept {
+        x /= k; y /= k;
+        return *this;
+    }
+    inline constexpr Vec2 operator-() const noexcept {
+        return Vec2(-x, -y);
+    }
+    inline constexpr double norm() const noexcept {
+        return x * x + y * y;
+    }
+    inline constexpr double abs() const noexcept {
+        return sqrt(norm());
+    }
+
+};
+inline constexpr bool operator==(Vec2 lhs, Vec2 rhs) noexcept {
+    return eq(lhs.x, rhs.x) && eq(lhs.y, rhs.y);
+}
+inline constexpr bool operator!=(Vec2 lhs, Vec2 rhs) noexcept { return !(lhs == rhs); }
+inline constexpr Vec2 operator+(Vec2 lhs, Vec2 rhs) noexcept { return Vec2(lhs) += rhs; }
+inline constexpr Vec2 operator-(Vec2 lhs, Vec2 rhs) noexcept { return Vec2(lhs) -= rhs; }
+inline constexpr Vec2 operator*(Vec2 lhs, double k) noexcept { return Vec2(lhs) *= k; }
+inline constexpr Vec2 operator/(Vec2 lhs, double k) noexcept { return Vec2(lhs) /= k; }
+inline ostream& operator<<(ostream &os, Vec2 rhs) { return os << rhs.x << ' ' << rhs.y; }
+inline istream& operator>>(istream &is, Vec2 &rhs) { return is >> rhs.x >> rhs.y; }
+inline constexpr double norm(const Vec2 a) noexcept { return a.norm(); }
+inline constexpr double abs(Vec2 a) noexcept { return a.abs(); }
+inline constexpr double dot(Vec2 a, Vec2 b) noexcept { return (a.x * b.x) + (a.y * b.y); }
+inline constexpr double det(Vec2 a, Vec2 b) noexcept { return (a.x * b.y) - (a.y * b.x); }
+inline constexpr double arg(Vec2 p) noexcept { return atan2(p.y, p.x); }
+// }}}
+
+// 線分{{{
+struct Segment {
+    Vec2 p1, p2;
+    constexpr Segment() noexcept {}
+    constexpr Segment(Vec2 p1, Vec2 p2) noexcept : p1(p1), p2(p2) {}
+
+    constexpr Vec2 asVec2() const noexcept {
+        return p2 - p1;
+    }
+};
+
+inline ostream& operator<<(ostream &os, const Segment &s) {
+    return os << '(' << s.p1 << "), (" << s.p2 << ')';
+}
+inline istream& operator>>(istream &is, Segment &s) {
+    return is >> s.p1 >> s.p2;
+}
+
+using Line = Segment;
+// }}}
+
+// 円 {{{
+struct Circle {
+    Vec2 c;
+    double r;
+    constexpr Circle() noexcept : c(), r(0) {}
+    constexpr Circle(Vec2 center, double radius) noexcept : c(center), r(radius) {}
+};
+// }}}
+
+// 直行判定 {{{
+inline constexpr bool isOrthogonal(Vec2 a, Vec2 b) noexcept {
+  return eq(dot(a, b), 0);
+}
+inline constexpr bool isOrthogonal(Vec2 a1, Vec2 a2, Vec2 b1, Vec2 b2) noexcept {
+    return isOrthogonal(a1 - a2, b1 - b2);
+}
+inline constexpr bool isOrthogonal(const Segment &s1, const Segment &s2) noexcept {
+    return eq(dot(s1.asVec2(), s2.asVec2()), 0);
+} // }}}
+
+// 平行判定{{{
+inline constexpr bool isParallel(Vec2 a, Vec2 b) noexcept {
+  return eq(det(a, b), 0);
+}
+inline constexpr bool isParallel(Vec2 a1, Vec2 a2, Vec2 b1, Vec2 b2) noexcept {
+    return isParallel(a1 - a2, b1 - b2);
+}
+inline constexpr bool isParallel(const Segment &s1, const Segment &s2) noexcept {
+    return eq(det(s1.asVec2(), s2.asVec2()), 0);
+} // }}}
+
+// 射影, 反射 {{{
+inline constexpr Vec2 project(const Segment &s, Vec2 p) noexcept {
+    const Vec2 base = s.asVec2();
+    double k = dot(p - s.p1, base) / norm(base);
+    return s.p1 + base * k;
+}
+
+inline constexpr Vec2 reflect(const Segment &s, Vec2 p) noexcept {
+    return p + (project(s, p) - p) * 2.0;
+} // }}}
+
+// 距離 {{{
+inline constexpr double distance(Vec2 a, Vec2 b) noexcept {
+    return abs(a - b);
+} // }}}
+
+// 反時計周り {{{
+
+// ベクトル {p0 -> p1} に対する p2 の位置 {{{
+enum CCW : int {
+    COUNTER_CLOCKWISE = 1,  // 半時計回り
+    CLOCKWISE = -1,         // 時計回り
+    ONLINE_BACK = 2,        // p2 {p0 -> p1};
+    ONLINE_FRONT = -2,      // {p0 -> p1} p2;
+    ON_SEGMENT = 0,         // {p0 p2 p1};
+}; // }}}
+
+inline constexpr CCW ccw(Vec2 p0, Vec2 p1, Vec2 p2) noexcept {
+    const Vec2 a = p1 - p0;
+    const Vec2 b = p2 - p0;
+    if (det(a, b) > EPS) return CCW::COUNTER_CLOCKWISE;
+    if (det(a, b) < -EPS) return CCW::CLOCKWISE;
+    if (dot(a, b) < -EPS) return CCW::ONLINE_BACK;
+    if (a.norm() < b.norm()) return CCW::ONLINE_FRONT;
+    return CCW::ON_SEGMENT;
+} // }}}
+
+// }}}
+//@@@@@@@@@@
