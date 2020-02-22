@@ -13,6 +13,27 @@ options     head, indent
     mt19937 mt(gen());
     using RR = uniform_int_distribution<int>;
 
+snippet     o1
+options     head
+    cout << ${1:ans} << "\n";
+
+snippet     o2
+options     head
+    cout << ${1} << ' ' << ${2} << "\n";
+
+snippet     all
+abbr        x.begin(), x.end()
+options     head
+    ${1}.begin(), $1.end()
+
+snippet     rall
+abbr        x.begin(), x.end()
+options     head
+    ${1}.rbegin(), $1.rend()
+
+snippet     unique
+options     head
+
 snippet     yesno
 abbr        yes, no
     print((${1}) ? "yes" : "no");
@@ -74,7 +95,7 @@ options     head
 snippet     fastIO
 alias       fastio cin.tie ios::sync_with_stdio
 options     head
-    cin.tie(nullptr); ios::sync_with_stdio(false);
+    cin.tie(nullptr); ios_base::sync_with_stdio(false);
 
 snippet     fixed
 alias       setprecision
@@ -83,8 +104,7 @@ options     word
 
 snippet     main
 options     head indent
-    signed main()
-    {
+    signed main() {
         ios::sync_with_stdio(false); cin.tie(nullptr);
 
         return 0;
@@ -95,3 +115,20 @@ abbr        #include "bits/stdc++.h"
 options     head
     #include "bits/stdc++.h"
     using namespace std;
+
+snippet     fixpoint
+options     head
+    template <typename Func>
+    struct FixPoint : Func {
+        inline constexpr FixPoint(Func &&f) noexcept : Func(forward<Func>(f)) {}
+
+        template <typename... Args>
+        inline decltype(auto) operator()(Args &&... args) const {
+            return Func::operator()(*this, forward<Args>(args)...);
+        }
+    };
+
+    template< typename Func >
+    inline decltype(auto) makeFixPoint(Func &&f) {
+        return FixPoint< Func >{forward< Func >(f)};
+    }

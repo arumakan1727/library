@@ -4,6 +4,8 @@
 #ifndef INCLUDED_YDK_MOD_INT_CPP
 #define INCLUDED_YDK_MOD_INT_CPP
 
+constexpr int MOD = int(1e9) + 7;
+
 //@@@@@@@
 //@ snippet modint
 //@ options head
@@ -47,7 +49,7 @@ public:
     inline bool operator!=(ModInt x) const noexcept { return !(this->operator==(x)); }
 
     friend ostream& operator<<(ostream &os, ModInt x) noexcept { os << x.value; return os; }
-    friend istream& operator>>(istream &is, ModInt &x) noexcept { is >> x.value; return is; }
+    friend istream& operator>>(istream &is, ModInt &x) noexcept { is >> x.value; x.value %= MOD; return is; }
 
     static constexpr inline ModInt pow(int64_t n, int64_t p) noexcept {
         int64_t ret = 1;
@@ -60,7 +62,7 @@ public:
 };
 // }}}
 
-using modint = ModInt<int(1e9) + 7>;
+using modint = ModInt<MOD>;
 //@@@@@@
 
 

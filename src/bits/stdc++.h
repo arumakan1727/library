@@ -15,6 +15,7 @@
 #include <limits>
 #include <typeinfo>
 #include <initializer_list>
+#include <type_traits>
 
 // C++ utilities
 #include <bitset>
@@ -60,6 +61,7 @@ inline std::ostream& operator<< (std::ostream &out, const std::pair<T, U> &p) {
 template <class T>
 inline std::ostream& operator<< (std::ostream &out, const std::vector<std::vector<T>> &mat) {
     static constexpr const char *tail[] = { "\n", "" };
+    out << "\n";
     for (int i = 0; i < mat.size(); ++i) {
         const auto &row = mat[i];
         out << "[" << std::setw(2) << i << "] " << std::setw(2) << row << tail[&row == &mat.back()];
@@ -83,6 +85,6 @@ void trace_(const char *s, Head&& head, Tail&&... tail) {
     trace_(s, std::forward<Tail>(tail)...);
 }
 
-#define trace(...)      trace_(#__VA_ARGS__, __VA_ARGS__)
+#define trace(...) trace_(#__VA_ARGS__, __VA_ARGS__)
 
 #endif /* end of include-guard */
