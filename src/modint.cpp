@@ -14,13 +14,11 @@ template<int64_t MOD>
 class ModInt {
     int64_t value;
 public:
-    // constructor
-    inline ModInt(int64_t val = 0) noexcept :
-        value((val >= MOD) ? (val % MOD) : (val < 0) ? ((val + MOD) % MOD) : val) {}
+    inline ModInt(int64_t val = 0) noexcept
+        : value((val >= MOD) ? (val % MOD) : (val < 0) ? ((val % MOD + MOD) % MOD) : val) {}
 
-    // プリミティブ整数型へのキャスト (型の明示:必要)
-    template<class Int>
-    explicit inline operator Int() const noexcept { return static_cast<Int>(value); }
+    template<class IntegerType>
+    explicit inline operator IntegerType() const noexcept { return static_cast<IntegerType>(value); }
 
     inline ModInt inv() const noexcept {
         return ModInt<MOD>::pow(value, MOD-2);
@@ -49,7 +47,6 @@ public:
     inline bool operator!=(ModInt x) const noexcept { return !(this->operator==(x)); }
 
     friend ostream& operator<<(ostream &os, ModInt x) noexcept { os << x.value; return os; }
-    friend istream& operator>>(istream &is, ModInt &x) noexcept { is >> x.value; x.value %= MOD; return is; }
 
     static constexpr inline ModInt pow(int64_t n, int64_t p) noexcept {
         int64_t ret = 1;
@@ -61,7 +58,6 @@ public:
     }
 };
 // }}}
-
 using modint = ModInt<MOD>;
 //@@@@@@
 
