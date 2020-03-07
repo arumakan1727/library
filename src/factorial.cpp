@@ -37,10 +37,8 @@ struct InvFact {
     constexpr inline ModInt<MOD> operator[] (size_t i) const { return f[i]; }
 };
 // }}}
-
 Factorial<200010, MOD> fact;
 InvFact<200010, MOD> invFact;
-
 ModInt<MOD> nCr(int n, int r) { return (r < 0 || n < r) ? 0 : (fact[n] * (invFact[r] * invFact[n-r])); }
 ModInt<MOD> nPr(int n, int r) { return (r < 0 || n < r) ? 0 : (fact[n] * invFact[n-r]); }
 ModInt<MOD> nHr(int n, int r) { return nCr(n+r-1, r); }
