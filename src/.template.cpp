@@ -1,11 +1,11 @@
 #include "bits/stdc++.h"
 // Begin Header {{{
 #define all(x)          (x).begin(), (x).end()
-#define rep(i, n)       for (i64 i = 0, i##_limit = (n); i < i##_limit; ++i)
-#define reps(i, s, t)   for (i64 i = (s), i##_limit = (t); i <= i##_limit; ++i)
+#define rep(i, s, n)    for (i64 i = (s), i##_limit = (n); i < i##_limit; ++i)
 #define repr(i, s, t)   for (i64 i = (s), i##_limit = (t); i >= i##_limit; --i)
+#define var(type, ...)  type __VA_ARGS__; read(__VA_ARGS__);
 #ifndef DBG
-#define trace(...)
+#define dump(...)
 #endif
 using namespace std;
 using i64 = int_fast64_t;
@@ -16,13 +16,19 @@ constexpr int INF  = 0x3f3f3f3f;
 constexpr i64 LINF = 0x3f3f3f3f3f3f3f3fLL;
 
 template <class T>
-inline vector<T> make_v(const T &initValue, size_t sz) {
+inline vector<T> makeV(const T &initValue, size_t sz) {
     return vector<T>(sz, initValue);
 }
 
 template <class T, class... Args>
-inline auto make_v(const T &initValue, size_t sz, Args... args) {
-    return vector<decltype(make_v<T>(initValue, args...))>(sz, make_v<T>(initValue, args...));
+inline auto makeV(const T &initValue, size_t sz, Args... args) {
+    return vector<decltype(makeV<T>(initValue, args...))>(sz, makeV<T>(initValue, args...));
+}
+
+template <class T>
+inline istream& operator>> (istream &is, vector<T> &vec) {
+    for (auto &e : vec) is >> e;
+    return is;
 }
 
 inline void read() {}
@@ -40,11 +46,19 @@ inline void print(Head &&head, Tail&&... tail) {
 }
 
 template <class T>
-inline ostream& operator<< (ostream &out, const vector<T> &vec) {
+inline ostream& operator<< (ostream &os, const vector<T> &vec) {
     static constexpr const char *delim[] = { " ", "" };
-    for (const auto &e : vec) out << e << delim[&e == &vec.back()];
-    return out;
+    for (const auto &e : vec) os << e << delim[&e == &vec.back()];
+    return os;
 }
+
+template <class Container>
+struct Rev {
+    Container &x_;
+    inline Rev(Container &x): x_(x) {}
+    inline auto begin() { return rbegin(x_); }
+    inline auto end() { return rend(x_); }
+};
 // }}} End Header
 
 signed main() {

@@ -33,6 +33,8 @@ options     head
 
 snippet     unique
 options     head
+    sort(all(${1}));
+    $1.erase(unique(all($1)), $1.end());
 
 snippet     yesno
 abbr        yes, no

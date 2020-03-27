@@ -48,43 +48,40 @@
 #include <sstream>
 #include <numeric>
 
-
 #ifndef DBG
 #define DBG
 #endif
 
 template <class T, class U>
-inline std::ostream& operator<< (std::ostream &out, const std::pair<T, U> &p) {
-    return out << '(' << p.first << ' ' << p.second << ')';
+inline std::ostream& operator<< (std::ostream &os, const std::pair<T, U> &p) {
+    return os << '(' << p.first << ' ' << p.second << ')';
 }
 
 template <class T>
-inline std::ostream& operator<< (std::ostream &out, const std::vector<std::vector<T>> &mat) {
+inline std::ostream& operator<< (std::ostream &os, const std::vector<std::vector<T>> &mat) {
     static constexpr const char *tail[] = { "\n", "" };
-    out << "\n";
+    os << "\n";
     for (int i = 0; i < mat.size(); ++i) {
         const auto &row = mat[i];
-        out << "[" << std::setw(2) << i << "] " << std::setw(2) << row << tail[&row == &mat.back()];
+        os << "[" << std::setw(2) << i << "] " << std::setw(2) << row << tail[&row == &mat.back()];
     }
-    return out;
+    return os;
 }
 
 template <class T>
-void trace_(const char *s, T&& x) {
-    std::clog << '{';
+void dump_(const char *s, T&& x) {
     while(*s != '\0') std::clog << *(s++);
-    std::clog << ":" << std::setw(3) << x << '}' << std::endl;
+    std::clog << ":" << x << std::endl;
 }
 
 template <class Head, class... Tail>
-void trace_(const char *s, Head&& head, Tail&&... tail) {
-    std::clog << '{';
+void dump_(const char *s, Head&& head, Tail&&... tail) {
     while(*s != ',') std::clog << *(s++);
-    std::clog << ":" << std::setw(3) << head << "}, ";
+    std::clog << ":" << head << ",  ";
     for (++s; !isgraph(*s); ++s);
-    trace_(s, std::forward<Tail>(tail)...);
+    dump_(s, std::forward<Tail>(tail)...);
 }
 
-#define trace(...) trace_(#__VA_ARGS__, __VA_ARGS__)
+#define dump(...) std::clog << setw(3) << setfill('0') << __LINE__ << "| "; dump_(#__VA_ARGS__, __VA_ARGS__)
 
 #endif /* end of include-guard */
